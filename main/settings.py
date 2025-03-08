@@ -29,7 +29,9 @@ SECRET_KEY = 'django-insecure-wagfguf3d=7e__j$c0@wkr@g9bramkan-^(cn3j7*lbm!k#*@4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1", "medtrav-doc.onrender.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "astra-uo3u.onrender.com"]
+
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "https://astra-uo3u.onrender.com"]
 
 MESSAGE_TAGS = {
     messages.ERROR: "danger"
