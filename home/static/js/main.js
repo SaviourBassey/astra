@@ -11,7 +11,7 @@ jQuery(document).on('ready', function() {
 			MOBILE MENU						
 	--------------------------------------*/
 	function collapseMenu(){
-		jQuery('.sj-navigation ul li.menu-item-has-children, .sj-navigation ul li.page_item_has_children, .sj-navigation ul li.menu-item-has-mega-menu').prepend('<span class="sj-dropdowarrow"><i class="fa fa-angle-down"></i></span>');
+		jQuery('.sj-navigation ul li.menu-item-has-children, .sj-navigation ul li.page_item_has_children, .sj-navigation ul li.menu-item-has-mega-menu').prepend('<span class="sj-dropdowarrow"><i class="fas fa-angle-down"></i></span>');
 		jQuery('.sj-navigation ul li.menu-item-has-children span, .sj-navigation ul li.page_item_has_children span, .sj-navigation ul li.menu-item-has-mega-menu span').on('click', function() {
 			jQuery(this).parent('li').toggleClass('sj-open');
 			jQuery(this).next().next().slideToggle(300);
@@ -91,7 +91,7 @@ jQuery(document).on('ready', function() {
 			dotsClass: 'sj-sliderdots',
 			navClass: ['sj-prev', 'sj-next'],
 			navContainerClass: 'sj-slidernav',
-			navText: ['<span class="fa fa-angle-left"></span>', '<span class="fa fa-angle-right"></span>'],
+			navText: ['<span class="fas fa-angle-left"></span>', '<span class="fas fa-angle-right"></span>'],
 		});
 	}
 	/* -------------------------------------
@@ -108,7 +108,7 @@ jQuery(document).on('ready', function() {
 			dotsClass: 'sj-sliderdots',
 			navClass: ['sj-prev', 'sj-next'],
 			navContainerClass: 'sj-slidernav',
-			navText: ['<span class="fa fa-angle-left"></span>', '<span class="fa fa-angle-right"></span>'],
+			navText: ['<span class="fas fa-angle-left"></span>', '<span class="fas fa-angle-right"></span>'],
 		});
 	}
 	/* -------------------------------------
@@ -127,7 +127,7 @@ jQuery(document).on('ready', function() {
 			dotsClass: 'sj-sliderdots',
 			navClass: ['sj-prev', 'sj-next'],
 			navContainerClass: 'sj-slidernav',
-			navText: ['<span class="fa fa-angle-left"></span>', '<span class="fa fa-angle-right"></span>'],
+			navText: ['<span class="fas fa-angle-left"></span>', '<span class="fas fa-angle-right"></span>'],
 			responsive:{
 				0:{items:2,},
 				567:{items:3,},
@@ -152,7 +152,7 @@ jQuery(document).on('ready', function() {
 			dotsClass: 'sj-sliderdots',
 			navClass: ['sj-prev', 'sj-next'],
 			navContainerClass: 'sj-slidernav',
-			navText: ['<span class="fa fa-angle-left"></span>', '<span class="fa fa-angle-right"></span>'],
+			navText: ['<span class="fas fa-angle-left"></span>', '<span class="fas fa-angle-right"></span>'],
 			responsive:{
 				0:{items:1,},
 				600:{items:2,},

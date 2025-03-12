@@ -74,3 +74,14 @@ class SubmitArticleView(LoginRequiredMixin, View):
             article_file = article_file
         )
         return redirect("dashboard:dashboard_under_review_view")
+    
+
+
+class PublicationPoliciesView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "home/publication_policies.html")
+    
+    
+class EditorialBoardView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "home/editorial_board.html")

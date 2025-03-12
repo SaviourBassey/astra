@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -17,7 +18,8 @@ class Article(models.Model):
     co_authors = models.CharField(max_length=1000, blank=True, null=True)
     article_keywords = models.CharField(max_length=1000)
     article_abstract = models.TextField()
-    article_file = models.FileField(upload_to="articles")
+    #article_file = models.FileField(upload_to="articles")
+    article_file = CloudinaryField('file', resource_type='raw')
     publish = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)

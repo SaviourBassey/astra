@@ -93,7 +93,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 							<div class="sj-topbar">
 								<ul class="sj-socialicons sj-socialiconssimple">
-									<li class="sj-facebook"><a href="javascript:void(0);"><i class="fa fa-facebook-f"></i></a></li>
+									<li class="sj-facebook"><a href="javascript:void(0);"><i class="fab fa-facebook-f"></i></a></li>
 									<li class="sj-twitter"><a href="javascript:void(0);"><i class="fab fa-twitter"></i></a></li>
 									<li class="sj-linkedin"><a href="javascript:void(0);"><i class="fab fa-linkedin-in"></i></a></li>
 									<li class="sj-googleplus"><a href="javascript:void(0);"><i class="fab fa-google-plus-g"></i></a></li>
@@ -136,7 +136,7 @@
 										<a id="sj-languages-button" href="javascript:void(0);">
 											<img src="{% static 'images/flags/flag-02.jpg' %}" alt="image description">
 											<span>Eng</span>
-											<i class="fa fa-angle-down"></i>
+											<i class="fas fa-angle-down"></i>
 										</a>
 										<ul>
 											<li>
@@ -166,15 +166,15 @@
 								<div class="sj-rightarea">
 									<nav id="sj-nav" class="sj-nav navbar-expand-lg">
 										<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-											<i class="lnr lnr-menu"></i>
+											<i class="fas fa-bars"></i>
 										</button>
 										<div class="collapse navbar-collapse sj-navigation" id="navbarNav">
 											<ul>
 												<li>
-													<a href="{% url 'home:home_view' %}"><i class="lnr lnr-home"></i> Home</a>
+													<a href="{% url 'home:home_view' %}"><i class="fas fa-home"></i> Home</a>
 												</li>
 												<li class="menu-item-has-children page_item_has_children">
-													<a href="javascript:void(0);">Articles</a>
+													<a href="javascript:void(0);"><i class="fas fa-newspaper"></i> Articles</a>
 													<ul class="sub-menu">
 														<li><a href="{% url 'home:all_articles_view' %}">Articles</a></li>
 														<li><a href="#">Journals</a></li>
@@ -182,20 +182,20 @@
 													</ul>
 												</li>
 												<li>
-													<a href="{% url 'home:about_view' %}">About us</a>
+													<a href="{% url 'home:about_view' %}"><i class="fas fa-info-circle"></i> About us</a>
 												</li>
 												<li>
-													<a href="#contactAstra">Contact us</a>
+													<a href="#contactAstra"><i class="fas fa-comments"></i> Contact us</a>
 												</li>
 												{% if user.is_authenticated %}
 												<li>
-													<a href="{% url 'dashboard:dashboard_my_articles_view' %}">My Accounts</a>
+													<a href="{% url 'dashboard:dashboard_my_articles_view' %}"><i class="fas fa-user"></i> My Accounts</a>
 												</li>
 												{% endif %}
 											</ul>
 										</div>
 									</nav>
-									<a class="sj-btntopsearch" href="#sj-searcharea"><i class="lnr lnr-magnifier"></i></a>
+									<a class="sj-btntopsearch" href="#sj-searcharea"><i class="fas fa-search"></i></a>
 									<a class="sj-btn sj-btnactive" href="{% url 'home:submit_article_view' %}">Submit Your Journal</a>
 								</div>
 							</div>
@@ -216,12 +216,7 @@
 					<div class="row">
 						<div class="col-12 col-sm-12 col-md-6 col-lg-6">
 							<div class="sj-postbook">
-								<figure class="sj-featureimg">
-									<a class="sj-btnvideo" href="javascript:void(0);"><i class="lnr lnr-film-play"></i><span>Watch Introduction Video</span></a>
-									<div class="sj-bookimg">
-										<div class="sj-frontcover"><img style="height: 552px; width: 443px;" src="{% static 'images/slider/image2.jpeg' %}" alt="image description"></div>
-									</div>
-								</figure>
+								<div class="sj-frontcover"><img style="height: 552px; width: 100%;" src="{% static 'images/slider/image2.jpeg' %}" alt="image description"></div>
 							</div>
 						</div>
 						<div class="col-12 col-sm-12 col-md-6 col-lg-6">
@@ -1252,6 +1247,69 @@
 								<!--************************************
 										Up Coming Books End
 								*************************************-->
+
+								<section class="sj-haslayout sj-sectioninnerspace">
+									<div class="sj-borderheading">
+										<h3>Indexed Platforms</h3>
+										<a class="sj-btnview" href="javascript:void(0);">View All</a>
+									</div>
+									<div class="sj-newsposts">
+										<div id="sj-newsarticlesslider" class="sj-newsarticlesslider sj-newsarticles owl-carousel">
+											<div class="item">
+												<div class="sj-newsarticle">
+													<figure class="sj-newsimg">
+														<img src="{% static 'images/ip1.jpeg' %}" alt="image description" style="height: 125px;">
+													</figure>
+												</div>
+											</div>
+											<div class="item">
+												<div class="sj-newsarticle">
+													<figure class="sj-newsimg">
+														<img src="{% static 'images/ip2.jpeg' %}" alt="image description" style="height: 125px;">
+													</figure>
+												</div>
+											</div>
+											<div class="item">
+												<div class="sj-newsarticle">
+													<figure class="sj-newsimg">
+														<img src="{% static 'images/ip3.jpeg' %}" alt="image description" style="height: 125px;">
+													</figure>
+												</div>
+											</div>
+											<div class="item">
+												<div class="sj-newsarticle">
+													<figure class="sj-newsimg">
+														<img src="{% static 'images/ip4.jpeg' %}" alt="image description" style="height: 125px;">
+													</figure>
+												</div>
+											</div>
+											<div class="item">
+												<div class="sj-newsarticle">
+													<figure class="sj-newsimg">
+														<img src="{% static 'images/ip5.jpeg' %}" alt="image description" style="height: 125px;">
+													</figure>
+												</div>
+											</div>
+											<div class="item">
+												<div class="sj-newsarticle">
+													<figure class="sj-newsimg">
+														<img src="{% static 'images/ip6.jpeg' %}" alt="image description" style="height: 125px;">
+													</figure>
+												</div>
+											</div>
+											<div class="item">
+												<div class="sj-newsarticle">
+													<figure class="sj-newsimg">
+														<img src="{% static 'images/ip7.jpeg' %}" alt="image description" style="height: 125px;">
+													</figure>
+												</div>
+											</div>
+										</div>
+									</div>
+								</section>
+								
+
+									
 								</div>
 							</div>
 							<div class="col-12 col-sm-12 col-md-4 col-lg-3">
@@ -1282,22 +1340,22 @@
 											</ul>
 										</div>
 									</div> -->
+									<div class="sj-widget sj-widgetadd">
+										<!-- <span class="sj-headtitle">Advertisment 270 x270</span> -->
+										<div class="sj-widgetcontent">
+											<figure class="sj-addimage"><a href="javascript:void(0);"><img style="height: 270px; width: 270px;" src="{% static 'images/ads.jpeg' %}" alt="image description"></a></figure>
+										</div>
+									</div>
 									<div class="sj-widget sj-widgetnoticeboard">
 										<div class="sj-widgetheading">
 											<h3>Notice Board</h3>
 										</div>
 										<div class="sj-widgetcontent">
 											<ul>
-												<li><a href="javascript:void(0);">New Submission Guidelines for Authors.</a></li>
+												<li><a href="{% url 'home:publication_policies_view' %}">New Submission Guidelines for Authors.</a></li>
 												<!-- <li><a href="javascript:void(0);">Labore etiat dolore magna aliquaen ad minim veniam.</a></li>
 												<li><a href="javascript:void(0);">Duis aute irure dolor in reprehender</a></li> -->
 											</ul>
-										</div>
-									</div>
-									<div class="sj-widget sj-widgetadd">
-										<span class="sj-headtitle">Advertisment 270 x270</span>
-										<div class="sj-widgetcontent">
-											<figure class="sj-addimage"><a href="javascript:void(0);"><img src="{% static 'images/ads.jpeg' %}" alt="image description"></a></figure>
 										</div>
 									</div>
 									<div class="sj-widget sj-widgetadd">
@@ -1322,7 +1380,7 @@
 			<footer id="sj-footer" class="sj-footer sj-haslayout">
 				<div class="container">
 					<div class="row">
-						<a class="sj-btnscrolltotop" href="javascript:void(0);"><i class="fa fa-angle-up"></i></a>
+						<a class="sj-btnscrolltotop" href="javascript:void(0);"><i class="fas fa-angle-up"></i></a>
 						<div class="sj-footercolumns">
 							<div class="col-12 col-sm-6 col-md-6 col-lg-3 float-left">
 								<div class="sj-fcol sj-footeraboutus">
@@ -1344,14 +1402,14 @@
 							<div class="col-12 col-sm-6 col-md-6 col-lg-3 float-left">
 								<div class="sj-fcol sj-widget sj-widgetusefullinks">
 									<div class="sj-widgetheading">
-										<h3>Coming Soon</h3>
+										<h3>Resources</h3>
 									</div>
 									<div class="sj-widgetcontent">
 										<ul>
-											<li><a href="javascript:void(0);">Coming</a></li>
-											<li><a href="javascript:void(0);">Careers @ Amentojourn</a></li>
-											<li><a href="javascript:void(0);">Get Help and Support</a></li>
-											<li><a href="javascript:void(0);">Rights &amp; Permissions</a></li>
+											<li><a href="javascript:void(0);">All Journals</a></li>
+											<li><a href="{% url 'home:all_articles_view' %}">Recent Articles</a></li>
+											<li><a href="{% url 'home:editorial_board_view' %}">Editorial Board</a></li>
+											<li><a href="{% url 'home:publication_policies_view' %}">Publication Policies</a></li>
 											<li class="sj-more"><a href="javascript:void(0);">more</a></li>
 										</ul>
 									</div>
@@ -1360,7 +1418,7 @@
 							<div class="col-12 col-sm-6 col-md-6 col-lg-3 float-left">
 								<div class="sj-fcol sj-widget sj-widgetresources">
 									<div class="sj-widgetheading">
-										<h3>Resources</h3>
+										<h3>Partnership</h3>
 									</div>
 									<div class="sj-widgetcontent">
 										<ul>
@@ -1380,11 +1438,10 @@
 									</div>
 									<div class="sj-widgetcontent">
 										<ul>
-											<li><i class="lnr lnr-home"></i><address>128, Divja Verba, Municipality of Dragash, Serbia, RS (SRB) Southern Europe. </address></li>
-											<li><a href="tel:+2347026911259"><i class="lnr lnr-phone"></i><span>+2347026911259</span></a></li>
-											<li><a href="tel:+2347038603421"><i class="lnr lnr-screen"></i><span>+2347038603421</span></a></li>
-											<li><a href="mailto:wordastrapublisher@gmail.com"><i class="lnr lnr-envelope"></i><span>wordastrapublisher@gmail.com</span></a></li>
-											<li><a href="mailto:wordastrajournals@gmail.com"><i class="lnr lnr-envelope"></i><span>wordastrajournals@gmail.com</span></a></li>
+											<li><i class="fas fa-home"></i><address>128, Divja Verba, Municipality of Dragash, Serbia, RS (SRB) Southern Europe. </address></li>
+											<li><a href="tel:+2347026911259"><i class="fas fa-phone"></i><span>+2347026911259, +2347038603421</span></a></li>
+											<li><a href="mailto:wordastrapublisher@gmail.com"><i class="fas fa-envelope"></i><span>wordastrapublisher@gmail.com</span></a></li>
+											<li><a href="mailto:wordastrajournals@gmail.com"><i class="fas fa-envelope"></i><span>wordastrajournals@gmail.com</span></a></li>
 										</ul>
 									</div>
 								</div>
