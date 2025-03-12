@@ -29,3 +29,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+admin.site.index_title = "Astra Journals"
+admin.site.site_header = "Astra Journals Admin"
+admin.site.site_title = "Astra Journals Adminiistration"
