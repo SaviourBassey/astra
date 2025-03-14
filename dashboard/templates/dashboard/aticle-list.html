@@ -16,8 +16,8 @@
 
 	{% endblock pagemeta %}
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="apple-touch-icon" href="apple-touch-icon.png">
-	<link rel="icon" href="images/favicon.png" type="image/x-icon">
+	<link rel="apple-touch-icon" href="{% static 'images/word astra logo.jpeg' %}">
+	<link rel="icon" href="{% static 'images/word astra logo.jpeg' %}" type="image/x-icon">
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
 	<link rel="stylesheet" href="{% static 'css/fontawesome/fontawesome-all.css' %}">
@@ -134,7 +134,7 @@
 								</div>
 							</div>
 							<div class="sj-navigationarea">
-								<strong class="sj-logo"><a href="{% url 'home:home_view' %}"><img style="height: 36px; width: 234px;" src="{% static 'images/word astra logo.jpeg' %}" alt="word astra journal logo image"></a></strong>
+								<strong class="sj-logo"><a href="{% url 'home:home_view' %}"><img style="height: 36px; width: 234px;" src="{% static 'images/word astra logo2.jpeg' %}" alt="word astra journal logo image"></a></strong>
 								<div class="sj-rightarea">
 									<nav id="sj-nav" class="sj-nav navbar-expand-lg">
 										<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -340,7 +340,7 @@
 							-6 col-lg-3 float-left">
 								<div class="sj-fcol sj-footeraboutus">
 									<strong class="sj-logo">
-										<a href="index.html"><img style="height: 36px; width: 234px;" src="{% static 'images/word astra logo.jpeg' %}" alt="word astra journal logo image"></a>
+										<a href="{% url 'home:home_view' %}"><img style="height: 36px; width: 234px;" src="{% static 'images/word astra logo2.jpeg' %}" alt="word astra journal logo image"></a>
 									</strong>
 									<div class="sj-description">
 										<p>Word Astra is a leading research, writing, editing, and publishing firm dedicated to fostering... <a href="{% url 'home:about_view' %}">Read More</p>
