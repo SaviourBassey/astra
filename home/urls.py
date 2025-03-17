@@ -11,4 +11,6 @@ urlpatterns = [
     path('articles/all-articles/', views.ArticleListView.as_view(), name="all_articles_view"),
     path('articles/submit-article/', views.SubmitArticleView.as_view(), name="submit_article_view"),
     path('articles/<str:SLUG>/', views.ArticleDetailView.as_view(), name="article_detail_view"),
+    path('journals/global-journal-of-modern-research-and-emerging-trends/', views.GjmretView.as_view(), name="journal_gjmret_view"),
+    path('journals/international-journal-of-public-relations-and-social-sciences/', views.IjprssView.as_view(), name="journal_ijprss_view"),
 ]

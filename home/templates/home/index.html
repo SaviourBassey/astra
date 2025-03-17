@@ -196,7 +196,7 @@
 										</div>
 									</nav>
 									<a class="sj-btntopsearch" href="#sj-searcharea"><i class="fas fa-search"></i></a>
-									<a class="sj-btn sj-btnactive" href="{% url 'home:submit_article_view' %}">Submit Your Journal</a>
+									<a class="sj-btn sj-btnactive" href="{% url 'home:submit_article_view' %}">Submit Your Article</a>
 								</div>
 							</div>
 						</div>
@@ -215,12 +215,19 @@
 			<div id="sj-homebanner" class="sj-homebanner">
 				<div class="container">
 					<div class="row">
-						<div class="col-12 col-sm-12 col-md-6 col-lg-6">
-							<div class="sj-postbook">
-								<div class="sj-frontcover"><img style="height: 552px; width: 100%;" src="{% static 'images/slider/image2.jpeg' %}" alt="image description"></div>
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="hero d-flex align-items-center justify-content-center" style="position: relative; background-image: url('{% static 'images/word_astra_jornal_about_us.jpeg' %}'); height: 400px; color: white;">
+								<div class="hero-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);"></div>
+								<div class="container text-center her-content" style="position: relative; z-index: 2; text-align: center; padding: 100px 0;">
+									<h1 class="display-5 fw-bold" style="color: white;">Word Astra Journals</h1>
+									<p class="lead">...Advancing knowledge,Elevating Research</p>
+								</div>
 							</div>
+							<!-- <div class="sj-postbook">
+								<div class="sj-frontcover"><img style="height: 552px; width: 100%;" src="{% static 'images/slider/image2.jpeg' %}" alt="image description"></div>
+							</div> -->
 						</div>
-						<div class="col-12 col-sm-12 col-md-6 col-lg-6">
+						<!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6">
 							<div class="sj-bannercontent">
 
 								<h1><span>Word Astra Journals</span> - Your Source for <span>Advanced Research</span></h1>
@@ -229,11 +236,11 @@
 								</div>
 
 
-								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
+			</div>
 			</div>
 
 			<!--************************************
@@ -304,12 +311,12 @@
 																
 																{% if article.co_authors %}, {{ article.co_authors }} {% endif %}
 															</a></span>
-															<h3><a href="javascript:void(0);">{{ article.article_title }}</a></h3>
+															<h3><a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">{{ article.article_title }}</a></h3>
 														</div>
 														<div class="sj-description">
 															<p>{{ article.abstract_snippet }}</p>
 														</div>
-														<a class="sj-btn" href="javascript:void(0);">View Full Article</a>
+														<a class="sj-btn" href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">View Full Article</a>
 														<a class="sj-btn sj-btnactive" href="{{ article.article_file.url }}" download>Download Article</a>
 													</div>
 												</article>
@@ -1229,7 +1236,7 @@
 														<img src="{% static 'images/gjmret.jpeg' %}" alt="image description">
 													</figure>
 													<div class="sj-postcontent">
-														<h3><a href="javascript:void(0);" style="text-transform: none;">Global Journal of Modern Research and Emerging Trends (GJ-MRET)</a></h3>
+														<h3><a href="{% url 'home:journal_gjmret_view' %}" style="text-transform: none;">Global Journal of Modern Research and Emerging Trends (GJ-MRET)</a></h3>
 													</div>
 												</div>
 											</div>
@@ -1239,7 +1246,7 @@
 														<img src="{% static 'images/ijprss.jpeg' %}" alt="image description">
 													</figure>
 													<div class="sj-postcontent">
-														<h3><a href="javascript:void(0);" style="text-transform: none;">International Journal of Public Relations and Social Sciences (IJPRSS)</a></h3>
+														<h3><a href="{% url 'home:journal_ijprss_view' %}" style="text-transform: none;">International Journal of Public Relations and Social Sciences (IJPRSS)</a></h3>
 													</div>
 												</div>
 											</div>
@@ -1260,7 +1267,7 @@
 											<div class="item">
 												<div class="sj-newsarticle">
 													<figure class="sj-newsimg">
-														<img src="{% static 'images/ip1.jpeg' %}" alt="image description" style="height: 125px;">
+														<img src="{% static 'images/ip5.jpeg' %}" alt="image description" style="height: 125px;">
 													</figure>
 												</div>
 											</div>
@@ -1288,7 +1295,7 @@
 											<div class="item">
 												<div class="sj-newsarticle">
 													<figure class="sj-newsimg">
-														<img src="{% static 'images/ip5.jpeg' %}" alt="image description" style="height: 125px;">
+														<img src="{% static 'images/ip1.jpeg' %}" alt="image description" style="height: 125px;">
 													</figure>
 												</div>
 											</div>

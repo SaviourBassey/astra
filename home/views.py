@@ -25,7 +25,22 @@ class AboutView(View):
 
 class ArticleListView(View):
     def get(self, request, *args, **kwargs):
-        all_article = Article.objects.filter(publish=True).order_by("-timestamp")
+        filter_kwargs = {}
+
+        # Loop through query parameters and add non-empty values to filter_kwargs
+        for key, value in request.GET.items():
+            if value:  # Only add non-empty parameters
+                filter_kwargs[key] = value
+
+        # Apply filters only if there are any filtering conditions
+        if filter_kwargs:
+            all_article = Article.objects.filter(**filter_kwargs).filter(publish=True).order_by("-timestamp")
+            print("HERE 1")
+        else:
+            all_article = Article.objects.filter(publish=True).order_by("-timestamp")
+            print("HERE 2")
+
+        print(all_article)
         context = {
             "all_article":all_article
         }
@@ -85,3 +100,21 @@ class PublicationPoliciesView(View):
 class EditorialBoardView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "home/editorial_board.html")
+    
+
+class GjmretView(View):
+    def get(self, request, *args, **kwargs):
+        related_articles = Article.objects.filter(journal_category="Global Journal of Modern Research and Emerging Trends (GJ-MRET)").order_by("-timestamp")[:3]
+        context = {
+            "related_articles":related_articles
+        }
+        return render(request, "home/gjmret.html", context)
+    
+
+class IjprssView(View):
+    def get(self, request, *args, **kwargs):
+        related_articles = Article.objects.filter(journal_category="International journal of public relations and social sciences (IJPRSS)").order_by("-timestamp")[:3]
+        context = {
+            "related_articles":related_articles
+        }
+        return render(request, "home/ijprss.html", context)

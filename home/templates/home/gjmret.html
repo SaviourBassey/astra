@@ -2,6 +2,7 @@
 
 {% load static %}
 
+
 <!doctype html>
 <!--[if lt IE 7]>		<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>			<html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -10,13 +11,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+	
 	{% block pagemeta %}
 
-	<title>Author Registration | Word Astra Journals - Submit Your Research Articles</title>
-
-    <meta name="description" content="Register as an author at Word Astra Journals to submit your research articles and academic papers for publication. Gain exposure for your work and join a global community of researchers.
-">
+	<title>About GJMRET | Global Journal of Modern Research and Emerging Trends</title>
+    <meta name="description" content="The Global Journal of Modern Research and Emerging Trends (GJMRET) is an open-access, peer-reviewed journal dedicated to advancing scholarly research across multiple disciplines.">
+    <meta name="keywords" content="GJMRET, Global Journal, Research Journal, Academic Publishing, Peer-Reviewed Journal, Open-Access, Scholarly Research, Science and Technology, Business and Economics, Engineering, Medicine, Social Sciences">
+    <meta name="author" content="Word Astra Publisher">
+    <meta name="robots" content="index, follow">
 
 	{% endblock pagemeta %}
 
@@ -155,7 +157,7 @@
 												<li>
 													<a href="aboutus.html">About us</a>
 												</li>
-												<li class="menu-item-has-children page_item_has_children">
+												<li class="menu-item-has-children page_item_has_children current-menu-item">
 													<a href="javascript:void(0);">Articles</a>
 													<ul class="sub-menu">
 														<li><a href="articles.html">Articles</a></li>
@@ -172,7 +174,7 @@
 														<li><a href="issuesyears.html">Issues Years</a></li>
 													</ul>
 												</li>
-												<li class="menu-item-has-children page_item_has_children current-menu-item">
+												<li class="menu-item-has-children page_item_has_children">
 													<a href="javascript:void(0);">Pages</a>
 													<ul class="sub-menu">
 														<li class="menu-item-has-children page_item_has_children">
@@ -215,7 +217,7 @@
 											</ul>
 										</div>
 									</nav>
-									<a class="sj-btntopsearch" href="loginregistervtwo.html#sj-searcharea"><i class="lnr lnr-magnifier"></i></a>
+									<a class="sj-btntopsearch" href="articledetail.html#sj-searcharea"><i class="lnr lnr-magnifier"></i></a>
 									<a class="sj-btn sj-btnactive" href="javascript:void(0);">Submit Your Article</a>
 								</div>
 							</div>
@@ -227,7 +229,7 @@
 					Header End
 			*************************************-->
 
-            {% block body %}
+			{% block body %}
 			<!--************************************
 					Inner Banner Start
 			*************************************-->
@@ -236,10 +238,10 @@
 					<div class="row">
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 							<div class="sj-innerbannercontent">
-								<h1>Become A Member</h1>
+								<h1>Article Title Here</h1>
 								<ol class="sj-breadcrumb">
 									<li><a href="javascript:void(0);">Home</a></li>
-									<li><a href="javascript:void(0);">Register</a></li>
+									<li><a href="javascript:void(0);">Articles</a></li>
 								</ol>
 							</div>
 						</div>
@@ -252,84 +254,164 @@
 			<!--************************************
 					Main Start
 			*************************************-->
-			<main id="sj-main" class="sj-main sj-haslayout sj-sectionspace sj-loginupdates">
+			<main id="sj-main" class="sj-main sj-haslayout sj-sectionspace">
 				<div id="sj-twocolumns" class="sj-twocolumns">
 					<div class="container">
 						<div class="row">
-							<div class="col-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="col-12 col-sm-12 col-md-8 col-lg-9">
 								<div id="sj-content" class="sj-content">
-									<div class="sj-registerarea">
-										<div class="registernow">
-											<div class="sj-borderheading">
-												<h3>Register Now</h3>
-											</div>
-											<div class="sj-registerformholder">
-												<div class="row">
-													<div class="col-12 col-sm-12 col-md-12 col-lg-6">
-														<form method="post" action="{% url 'accounts:register_view' %}" class="sj-formtheme sj-formregister">
-                                                            {% csrf_token %}
-															<fieldset>
-                                                                {% for message in messages %}
-                                                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                                                                {% endfor %}
-																<div class="form-group">
-																	<input type="text" name="first_name" class="form-control" placeholder="First Name*" required>
-																</div>
-																<div class="form-group">
-																	<input type="text" name="last_name" class="form-control" placeholder="Last Name*" required>
-																</div>
-																<div class="form-group">
-																	<input type="email" name="email" class="form-control" placeholder="Email*" required>
-																</div>
-																<div class="form-group">
-																	<input type="password" name="password" class="form-control" placeholder="Password*" required>
-
-                                                                    <div style="margin-top: 10px; font-size: small;">
-                                                                        <ul>
-                                                                            <li>Password must contain at least one letter (uppercase or lowercase)</li>
-                                                                            <li>Password must contain at least one digit (0-9)</li>
-                                                                            <li>Password must contain at least one special character (e.g., @, #, $, %)</li>
-                                                                            <li>Password must have a minimum length of 8 characters</li>
-                                                                        </ul>
-                                                                    </div>
-																</div>
-																<div class="form-group">
-																	<div class="d-flex align-items-center">
-																		<input type="checkbox" id="register" required class="form-control" style="width: 15px; height: 15px; margin-right: 15px;">
-																		<label for="register">By registering, you accept our <a href="javascript:void(0);">Terms &amp; Conditions</a></label>
-																	</div>											
-																</div>
-																<div class="sj-btnarea">
-																	<button type="submit" class="sj-btn sj-btnactive">Register</button>
-																</div>
-															</fieldset>
-
-                                                            <div>
-                                                                <p  style="margin-top: 20px;">Already have an accounts? <a href="{% url 'accounts:login_view' %}">Login</a></p>
-                                                            </div>
-														</form>
-													</div>
-													<div class="col-12 col-sm-12 col-md-12 col-lg-6">
-                                                        <div class="sj-howtoregister">
-                                                            <h3>Why Sign Up as an Author at Word Astra Journals?</h3>
-                                                            <div class="sj-description">
-                                                                <p>Registering as an author at Word Astra Journals offers you the opportunity to publish your research, gain global exposure, and contribute to advancing knowledge in your field. Join our community of scholars and ensure your work reaches a wider audience.</p>
-                                                            </div>
-                                                            <ul class="sj-liststyle">
-                                                                <li><span>Publish your original research and academic papers to a global audience</span></li>
-                                                                <li><span>Gain recognition and visibility within the academic community</span></li>
-                                                                <li><span>Access a user-friendly platform to submit your work easily</span></li>
-                                                                <li><span>Benefit from peer reviews and feedback to improve your research</span></li>
-                                                                <li><span>Join a network of experts, researchers, and thought leaders</span></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
-												</div>
+									<div class="sj-articledetail">
+										<ul class="sj-downloadprint">
+											{% comment %} <li><a href="javascript:void(0);"><i class="fa fa-print"></i><span>Print Now</span></a></li> {% endcomment %}
+											<li><a href="javascript:void(0);"><i class="fa fa-envelope"></i><span>Email Us</span></a></li>
+											{% comment %} <li><a href="javascript:void(0);"><i class="fa fa-download"></i><span>Download</span></a></li> {% endcomment %}
+										</ul>
+										<figure class="sj-articledetailimg">
+                                            <div class="hero d-flex align-items-center justify-content-center" style="position: relative; background-image: url('{% static 'images/word_astra_jornal_about_us.jpeg' %}'); height: 300px; color: white;">
+                                                <div class="hero-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);"></div>
+                                                <div class="container text-center her-content" style="position: relative; z-index: 2; text-align: center; padding: 100px 0;">
+                                                    <h1 class="display-6 fw-bold" style="color: white;">Global Journal of Modern Research and Emerging Trends</h1>
+                                                    <p class="lead">(GJ-MRET) Journal</p>
+                                                </div>
+                                            </div>
+											{% comment %} <img src="images/newsarticle-img.jpg" alt="image description"> {% endcomment %}
+										</figure>
+										<div class="sj-articledescription sj-sectioninnerspace">
+                                            <span>About the Journal: </span>
+											<h4>Global Journal of Modern Research and Emerging Trends (GJ-MRET)</h4>
+											<div class="sj-description">
+												<p>
+                                                    The Global Journal of Modern Research and Emerging Trends (GJMRET) is a prestigious, open-access, peer-reviewed journal published monthly by Word Astra Publisher. Dedicated to advancing scholarly research, GJMRET serves as a global platform for researchers, academicians, and industry professionals to disseminate cutting-edge findings, innovative ideas, and emerging trends across multiple disciplines. 
+                                                </p>
+                                                <p>
+                                                    Our journal welcomes original research articles, review papers, case studies, and technical reports across diverse academic fields, including:
+                                                </p>
+                                                <ul>
+                                                    <li>Arts and Humanities</li>
+                                                    <li>Social Sciences and Public Administration</li>
+                                                    <li>Science and Technology</li>
+                                                    <li>Engineering and Innovation</li>
+                                                    <li>Business and Economics</li>
+                                                    <li>Medicine and Health Sciences</li>
+                                                    <li>Environmental and Sustainability Studies</li>
+                                                </ul> <br>
+                                                <p>
+                                                    We invite authors to review our submission guidelines and submit their manuscripts via <a href="mailto:wordastrajournals@gmail.com">wordastrajournals@gmail.com</a> or through our online submission portal.
+                                                </p>
+                                                <p>
+                                                    Join us in shaping the future of research and innovation—at GJMRET, where ideas meet impact.
+                                                </p>
+												<br>
+												<a class="sj-btn sj-btnactive" href="{% url 'home:all_articles_view' %}?journal_category=Global Journal of Modern Research and Emerging Trends (GJ-MRET)">View Journal Articles</a>
 											</div>
 										</div>
 									</div>
 								</div>
+							</div>
+							<div class="col-12 col-sm-12 col-md-4 col-lg-3">
+								<aside id="sj-sidebar" class="sj-sidebar">
+									<div class="sj-widget sj-widgetsearch">
+										<div class="sj-widgetcontent">
+											<form class="sj-formtheme sj-formsearch">
+												<fieldset>
+													<input type="search" name="search" class="form-control" placeholder="Search here">
+													<button type="submit" class="sj-btnsearch"><i class="lnr lnr-magnifier"></i></button>
+												</fieldset>
+											</form>
+										</div>
+									</div>
+									{% if related_articles %}
+									<div class="sj-widget sj-widgetrelatedarticles">
+										<div class="sj-widgetheading">
+											<h3>Related Articles</h3>
+										</div>
+										<div class="sj-widgetcontent">
+											<ul>
+												{% for article in related_articles %}
+												<li>
+													<span class="sj-username"><a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">{{ article.author.first_name }} {{ article.author.last_name }}</a></span>
+													<div class="sj-description">
+														<p>{{ article.article_title }}</p>
+													</div>
+												</li>
+												{% endfor %}
+											</ul>
+										</div>
+									</div>
+									{% endif %}
+									<!-- <div class="sj-widget sj-widgetimpactfector">
+										<div class="sj-widgetcontent">
+											<ul>
+												<li>
+													<h3>Impact Factor<span>2.125</span></h3>
+													<h3>5 Year Impact Factor<span>2.853</span></h3>
+												</li>
+												<li>
+													<h3>Dr. Desmond Bratton</h3>
+													<div class="sj-description">
+														<p>Consectetur adipisicing elit sedo amod tempor incididunt. <a href="javascript:void(0)">Read More</a></p>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div> -->
+									<div class="sj-widget sj-widgetnoticeboard">
+										<div class="sj-widgetheading">
+											<h3>Notice Board</h3>
+										</div>
+										<div class="sj-widgetcontent">
+											<ul>
+												<li><a href="javascript:void(0);">New Submission Guidelines for Authors.</a></li>
+												<!-- <li><a href="javascript:void(0);">Labore etiat dolore magna aliquaen ad minim veniam.</a></li>
+												<li><a href="javascript:void(0);">Duis aute irure dolor in reprehender</a></li> -->
+											</ul>
+										</div>
+									</div>
+									<div class="sj-widget sj-widgetadd">
+										<span class="sj-headtitle">Advertisment 270 x270</span>
+										<div class="sj-widgetcontent">
+											<figure class="sj-addimage"><a href="javascript:void(0);"><img src="{% static 'images/ads.jpeg' %}" alt="image description"></a></figure>
+										</div>
+									</div>
+									<!-- <div class="sj-widget sj-widgetquestions">
+										<div class="sj-widgetheading">
+											<h3>Question Of The Week</h3>
+										</div>
+										<div class="sj-widgetcontent">
+											<div class="sj-description">
+												<p>Consectetur adipisicing elit, sed aeiuse tempor incididunt ut labore etamiudon magna aliqua enim ad minim?</p>
+											</div>
+											<div class="sj-questions">
+												<div class="sj-selectgroup">
+													<span class="sj-radio">
+														<input id="sj-qone" type="radio" name="question" value="qone" checked="">
+														<label for="sj-qone">Sputum stain for acid-fast bacilli</label>
+													</span>
+													<span class="sj-radio">
+														<input id="sj-qtwo" type="radio" name="question" value="qtwo">
+														<label for="sj-qtwo">Pleural biopsy</label>
+													</span>
+													<span class="sj-radio">
+														<input id="sj-qthree" type="radio" name="question" value="qthree">
+														<label for="sj-qthree">Pleural fluid amylase</label>
+													</span>
+													<span class="sj-radio">
+														<input id="sj-qfour" type="radio" name="question" value="qfour">
+														<label for="sj-qfour">Pleural fluid cytology</label>
+													</span>
+												</div>
+												<a class="sj-btn" href="javascript:void(0);">Submit Now</a>
+											</div>
+										</div>
+									</div> -->
+									
+									
+									<div class="sj-widget sj-widgetadd">
+										<div class="sj-widgetcontent">
+											<figure class="sj-addimage"><a href="javascript:void(0);"><img src="{% static 'images/widget-add2.jpg' %}" alt="image description"></a></figure>
+										</div>
+									</div>
+								</aside>
 							</div>
 						</div>
 					</div>
@@ -339,7 +421,7 @@
 					Main End
 			*************************************-->
 
-            {% endblock body %}
+			{% endblock body %}
 			<!--************************************
 					Footer Start
 			*************************************-->
