@@ -1224,35 +1224,28 @@
 								<!--************************************
 										Up Coming Books Start
 								*************************************-->
+								{% if all_journals %}
 									<section class="sj-haslayout sj-sectioninnerspace">
 										<div class="sj-borderheading">
 											<h3>Available Journals</h3>
 											<a class="sj-btnview" href="javascript:void(0);">View All</a>
 										</div>
 										<div id="sj-upcomingbooksslider" class="sj-upcomingbooksslider sj-upcomingbooks owl-carousel">
+											{% for journal in all_journals %}
 											<div class="item">
 												<div class="sj-upcomingbook">
 													<figure class="sj-upcomingbookimg">
-														<img src="{% static 'images/gjmret.jpeg' %}" alt="image description">
+														<img src="{{ journal.journal_cover.url }}" alt="image description">
 													</figure>
 													<div class="sj-postcontent">
-														<h3><a href="{% url 'home:journal_gjmret_view' %}" style="text-transform: none;">Global Journal of Modern Research and Emerging Trends (GJ-MRET)</a></h3>
+														<h3><a href="{% url 'home:journal_detail_view' SLUG=journal.journal_slug %}" style="text-transform: none;">{{ journal.journal_name }} ({{ journal.journal_abbreviation }})</a></h3>
 													</div>
 												</div>
 											</div>
-											<div class="item">
-												<div class="sj-upcomingbook">
-													<figure class="sj-upcomingbookimg">
-														<img src="{% static 'images/ijprss.jpeg' %}" alt="image description">
-													</figure>
-													<div class="sj-postcontent">
-														<h3><a href="{% url 'home:journal_ijprss_view' %}" style="text-transform: none;">International Journal of Public Relations and Social Sciences (IJPRSS)</a></h3>
-													</div>
-												</div>
-											</div>
-
+											{% endfor %}
 										</div>
 									</section>
+								{% endif %}
 								<!--************************************
 										Up Coming Books End
 								*************************************-->

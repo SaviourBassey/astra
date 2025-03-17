@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from dashboard.models import Article
+from dashboard.models import Article, Journal
 
 # Create your views here.
 
@@ -12,8 +12,11 @@ class HomeView(View):
         # Split the articles into chunks of 3
         grouped_features_articles = [featured_article[i:i+3] for i in range(0, len(featured_article), 3)]
 
+        all_journals = Journal.objects.all().order_by("-timestamp")
+
         context = {
-            "grouped_features_articles":grouped_features_articles
+            "grouped_features_articles":grouped_features_articles,
+            "all_journals":all_journals
         }
         return render(request, "home/index.html", context)
     
@@ -35,12 +38,9 @@ class ArticleListView(View):
         # Apply filters only if there are any filtering conditions
         if filter_kwargs:
             all_article = Article.objects.filter(**filter_kwargs).filter(publish=True).order_by("-timestamp")
-            print("HERE 1")
         else:
             all_article = Article.objects.filter(publish=True).order_by("-timestamp")
-            print("HERE 2")
 
-        print(all_article)
         context = {
             "all_article":all_article
         }
@@ -65,6 +65,17 @@ class ArticleDetailView(View):
 class JournalListView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "home/index.html")
+    
+
+class JournalDetailView(View):
+    def get(self, request, SLUG, *args, **kwargs):
+        journal = Journal.objects.get(journal_slug=SLUG)
+        related_articles = Article.objects.filter(journal_category=journal.id).order_by("-timestamp")[:3]
+        context = {
+            "related_articles":related_articles,
+            "journal":journal
+        }
+        return render(request, "home/journal-detail.html", context)
     
 
 class SubmitArticleView(LoginRequiredMixin, View):
@@ -101,20 +112,4 @@ class EditorialBoardView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "home/editorial_board.html")
     
-
-class GjmretView(View):
-    def get(self, request, *args, **kwargs):
-        related_articles = Article.objects.filter(journal_category="Global Journal of Modern Research and Emerging Trends (GJ-MRET)").order_by("-timestamp")[:3]
-        context = {
-            "related_articles":related_articles
-        }
-        return render(request, "home/gjmret.html", context)
     
-
-class IjprssView(View):
-    def get(self, request, *args, **kwargs):
-        related_articles = Article.objects.filter(journal_category="International journal of public relations and social sciences (IJPRSS)").order_by("-timestamp")[:3]
-        context = {
-            "related_articles":related_articles
-        }
-        return render(request, "home/ijprss.html", context)

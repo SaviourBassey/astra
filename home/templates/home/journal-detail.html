@@ -267,35 +267,15 @@
 											{% comment %} <li><a href="javascript:void(0);"><i class="fa fa-download"></i><span>Download</span></a></li> {% endcomment %}
 										</ul>
 										<figure class="sj-articledetailimg">
-                                            <img src="{% static 'images/gjmret.jpeg' %}" alt="image description">
+                                            <img src="{{ journal.journal_cover.url }}" alt="image description">
 										</figure>
 										<div class="sj-articledescription sj-sectioninnerspace">
                                             <span>About the Journal: </span>
-											<h4>Global Journal of Modern Research and Emerging Trends (GJ-MRET)</h4>
+											<h4>{{ journal.journal_name }} ({{ journal.journal_abbreviation }})</h4>
 											<div class="sj-description">
-												<p>
-                                                    The Global Journal of Modern Research and Emerging Trends (GJMRET) is a prestigious, open-access, peer-reviewed journal published monthly by Word Astra Publisher. Dedicated to advancing scholarly research, GJMRET serves as a global platform for researchers, academicians, and industry professionals to disseminate cutting-edge findings, innovative ideas, and emerging trends across multiple disciplines. 
-                                                </p>
-                                                <p>
-                                                    Our journal welcomes original research articles, review papers, case studies, and technical reports across diverse academic fields, including:
-                                                </p>
-                                                <ul>
-                                                    <li>Arts and Humanities</li>
-                                                    <li>Social Sciences and Public Administration</li>
-                                                    <li>Science and Technology</li>
-                                                    <li>Engineering and Innovation</li>
-                                                    <li>Business and Economics</li>
-                                                    <li>Medicine and Health Sciences</li>
-                                                    <li>Environmental and Sustainability Studies</li>
-                                                </ul> <br>
-                                                <p>
-                                                    We invite authors to review our submission guidelines and submit their manuscripts via <a href="mailto:wordastrajournals@gmail.com">wordastrajournals@gmail.com</a> or through our online submission portal.
-                                                </p>
-                                                <p>
-                                                    Join us in shaping the future of research and innovation—at GJMRET, where ideas meet impact.
-                                                </p>
+												{{ journal.journal_description|safe }}
 												<br>
-												<a class="sj-btn sj-btnactive" href="{% url 'home:all_articles_view' %}?journal_category=Global Journal of Modern Research and Emerging Trends (GJ-MRET)">View Journal Articles</a>
+												<a class="sj-btn sj-btnactive" href="{% url 'home:all_articles_view' %}?journal_category={{ journal.id }}">View Journal Articles</a>
 											</div>
 										</div>
 									</div>
