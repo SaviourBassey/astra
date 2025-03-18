@@ -3,13 +3,16 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from cloudinary.models import CloudinaryField
 from ckeditor.fields import RichTextField
+import cloudinary.uploader
+import re
 
 # Create your models here.
 
-JOURNAL_CAT = (
-      ("Global Journal of Modern Research and Emerging Trends (GJ-MRET)","Global Journal of Modern Research and Emerging Trends (GJ-MRET)"),
-      ("International journal of public relations and social sciences (IJPRSS)","International journal of public relations and social sciences (IJPRSS)"),
-)
+
+def slugify_filename(title):
+    """Convert title to a clean filename (good for SEO)."""
+    return re.sub(r'[^a-zA-Z0-9-_]', '-', title).lower()
+
 
 class Journal(models.Model):
     journal_name = models.CharField(max_length=1000)
@@ -63,5 +66,20 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         if not self.article_slug:
             self.article_slug = slugify(self.article_title)
+
+        if self.article_file:
+            file_extension = self.article_file.name.split('.')[-1]  # Get original file extension
+            public_id = f"articles/{slugify_filename(self.article_title)}.{file_extension}"
+            
+            upload_result = cloudinary.uploader.upload(
+                self.article_file,
+                resource_type="raw",
+                public_id=public_id,
+                overwrite=True,
+                context={"caption": self.article_title, "alt": self.article_title}
+            )
+            
+            self.article_file = upload_result['public_id']
+
         super().save(*args, **kwargs)
 

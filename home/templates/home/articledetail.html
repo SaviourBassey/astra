@@ -273,7 +273,7 @@
 											<li><a href="javascript:void(0);"><i class="fa fa-download"></i><span>Download</span></a></li>
 										</ul>
 										<figure class="sj-articledetailimg">
-											<img style="height: 400px; width: 100%;" src="{% static 'images/astra_journal_banneer.jpeg' %}" alt="image description">
+											<img style="width: 100%;" src="{{ article.journal_category.journal_cover.url }}" alt="image description">
 										</figure>
 										<div class="sj-articledescription sj-sectioninnerspace">
 											<span class="sj-username"><a href="javascript:void(0);">
@@ -281,7 +281,7 @@
 																
 												{% if article.co_authors %}, {{ article.co_authors }} {% endif %}
 											</a></span>
-											<h4>{{ article.article_title }}</h4>
+											<h4><b>{{ article.article_title }}</b></h4>
 											<div class="sj-description">
 												<p>{{ article.article_abstract }}</p>
 												<br>
@@ -306,16 +306,18 @@
 									{% if related_articles %}
 									<div class="sj-widget sj-widgetrelatedarticles">
 										<div class="sj-widgetheading">
-											<h3>Related Articles</h3>
+											<h3><b>Related Articles</b></h3>
 										</div>
 										<div class="sj-widgetcontent">
 											<ul>
 												{% for article in related_articles %}
 												<li>
-													<span class="sj-username"><a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">{{ article.author.first_name }} {{ article.author.last_name }}</a></span>
-													<div class="sj-description">
-														<p>{{ article.article_title }}</p>
-													</div>
+													<a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">
+														<span class="sj-username"><a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">{{ article.author.first_name }} {{ article.author.last_name }}</a></span>
+														<div class="sj-description">
+															<p>{{ article.article_title }}</p>
+														</div>
+													</a>
 												</li>
 												{% endfor %}
 											</ul>
