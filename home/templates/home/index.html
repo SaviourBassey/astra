@@ -317,7 +317,7 @@
 															<p>{{ article.abstract_snippet }}</p>
 														</div>
 														<a class="sj-btn" href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">View Full Article</a>
-														<a class="sj-btn sj-btnactive" href="{{ article.article_file.url }}" download>Download Article</a>
+														<a class="sj-btn sj-btnactive" href="{{ article.article_file }}" download>Download Article</a>
 													</div>
 												</article>
 												{% endfor %}

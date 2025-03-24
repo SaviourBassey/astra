@@ -274,10 +274,11 @@
 													</div>
 													<div class="form-group">
 														<span class="sj-select">
-															<select name="journal_cat">
+															<select name="journal_cat_id">
 																<option>Select Journal (Optional)</option>
-																<option>Global Journal of Modern Research and Emerging Trends (GJ-MRET)</option>
-																<option>International journal of public relations and social sciences (IJPRSS)</option>
+																{% for journal in all_journals %}
+																<option value="{{ journal.id }}">{{ journal.journal_name }} ({{ journal.journal_abbreviation }})</option>
+																{% endfor %}
 															</select>
 														</span>
 													</div>

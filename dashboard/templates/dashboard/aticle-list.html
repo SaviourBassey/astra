@@ -288,17 +288,21 @@
 												<div class="sj-downloadheader">
 													<div class="sj-title">
 														<h3>Attached Document</h3>
-														<a href="{{ article.article_file.url }}" download><i class="lnr lnr-download"></i>Download</a>
+														<a href="{{ article.article_DOI }}" ><i class="lnr lnr-download"></i>Download</a>
 													</div>
 													<div class="sj-docdetails">
 														<figure class="sj-docimg">
 															<img src="{% static 'images/thumbnails/doc-img.jpg' %}" alt="img description">
 														</figure>
 														<div class="sj-docdescription">
-															{% with article.article_file.name|split:"/" as parts %}
+															{% with article.article_file|slice:"-1"|split:"/" as parts %}
 															<h4>{{ parts|last }}</h4>
 															{% endwith %}
-															<span>File Size {{ article.article_file.size|filesizeformat }}</span>
+															{% if article.article_file_size %}
+																<span>File Size: {{ article.article_file_size|filesizeformat }}</span>
+															{% else %}
+																<span>File Size: Not Available</span>
+															{% endif %}
 														</div>
 													</div>
 												</div>

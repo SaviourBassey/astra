@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.models import Article, Journal
+from .imagekitconfig import imagekit
+import os
+import cloudinary.uploader
 
 # Create your views here.
 
@@ -80,25 +83,58 @@ class JournalDetailView(View):
 
 class SubmitArticleView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        return render(request, "home/submitarticle.html")
+        all_journals = Journal.objects.all().order_by("journal_name")
+        context = {
+            "all_journals": all_journals
+        }
+        return render(request, "home/submitarticle.html", context)
     
     def post(self, request, *args, **kwargs):
         article_title = request.POST.get("article_title")
-        journal_cat = request.POST.get("journal_cat")
+        journal_cat_id = int(request.POST.get("journal_cat_id"))
         co_authors = request.POST.get("co_authors")
         article_keywords = request.POST.get("article_keywords")
         article_abstract = request.POST.get("article_abstract")
         article_file = request.FILES.get("article_file")
 
+        # Ensure the journal category exists
+        journal_id = Journal.objects.filter(id=journal_cat_id).first()
+
+        file_url = None
+        imagekit_url = None
+        file_size = 0
+
+        if article_file:
+            file_extension = os.path.splitext(article_file.name)[1]
+            safe_file_name = f"{article_title.replace(' ', '_').lower()}{file_extension}"
+
+            # ✅ Read the file correctly using Django's file handling methods
+            article_file.seek(0)  # Ensure the file pointer is at the beginning
+            file_content = article_file.read()
+
+            # ✅ Upload to ImageKit
+            upload = imagekit.upload_file(
+                file=file_content,  # ✅ Pass binary content, NOT a file path
+                file_name=safe_file_name,
+            )
+
+            # ✅ Retrieve the uploaded file URL
+            url = upload.response_metadata.raw["url"]
+            print("Uploaded file URL:", url)
+
+        # 🔹 Step 4: Save Article
         Article.objects.create(
-            author = request.user,
-            article_title = article_title,
-            journal_category = journal_cat,
-            co_authors = co_authors,
-            article_keywords = article_keywords,
-            article_abstract = article_abstract,
-            article_file = article_file
+            author=request.user,
+            article_title=article_title,
+            journal_category=journal_id,
+            co_authors=co_authors,
+            article_keywords=article_keywords,
+            article_abstract=article_abstract,
+            article_file=None,  # Save Cloudinary URL
+            article_file_url=url,  # Save ImageKit URL
+            article_file_size=file_size,  # Save file size in bytes
         )
+
         return redirect("dashboard:dashboard_under_review_view")
     
 
