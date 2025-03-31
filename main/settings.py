@@ -29,9 +29,9 @@ SECRET_KEY = 'django-insecure-wagfguf3d=7e__j$c0@wkr@g9bramkan-^(cn3j7*lbm!k#*@4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1", "astra-uo3u.onrender.com", "wordastrajournals.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "astra-uo3u.onrender.com", "www.wordastrajournals.com"]
 
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "https://astra-uo3u.onrender.com", "https://wordastrajournals.com"]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "https://astra-uo3u.onrender.com", "https://www.wordastrajournals.com"]
 
 MESSAGE_TAGS = {
     messages.ERROR: "danger"
