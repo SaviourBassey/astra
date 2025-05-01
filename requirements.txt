@@ -1,4 +1,6 @@
 asgiref==3.8.1
+boto3==1.37.37
+botocore==1.37.37
 certifi==2025.1.31
 charset-normalizer==3.4.1
 cloudinary==1.42.2
@@ -6,16 +8,20 @@ dj-database-url==2.3.0
 Django==5.1.6
 django-ckeditor==6.7.2
 django-js-asset==3.1.2
+django-storages==1.14.6
 gunicorn==23.0.0
 idna==3.10
 imagekitio==4.1.0
+jmespath==1.0.1
 packaging==24.2
 pillow==11.1.0
 psycopg2-binary==2.9.10
 PyMySQL==1.1.1
+python-dateutil==2.9.0.post0
 python-decouple==3.8
 requests==2.32.3
 requests-toolbelt==0.10.1
+s3transfer==0.11.5
 six==1.17.0
 sqlparse==0.5.3
 typing_extensions==4.12.2

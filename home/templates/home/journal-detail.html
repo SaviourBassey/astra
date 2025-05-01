@@ -14,9 +14,10 @@
 	
 	{% block pagemeta %}
 
-	<title>About GJMRET | Global Journal of Modern Research and Emerging Trends</title>
-    <meta name="description" content="The Global Journal of Modern Research and Emerging Trends (GJMRET) is an open-access, peer-reviewed journal dedicated to advancing scholarly research across multiple disciplines.">
-    <meta name="keywords" content="GJMRET, Global Journal, Research Journal, Academic Publishing, Peer-Reviewed Journal, Open-Access, Scholarly Research, Science and Technology, Business and Economics, Engineering, Medicine, Social Sciences">
+	
+	<title>About {{ journal.journal_abbreviation }} | {{ journal.journal_name }}</title>
+    <meta name="description" content="{{ journal.journal_description|safe }}">
+    <meta name="keywords" content="{{ journal.journal_abbreviation }}, {{ journal.journal_name }}, Research Journal, Academic Publishing, Peer-Reviewed Journal, Open-Access, Scholarly Research, Science and Technology, Business and Economics, Engineering, Medicine, Social Sciences">
     <meta name="author" content="Word Astra Publisher">
     <meta name="robots" content="index, follow">
 

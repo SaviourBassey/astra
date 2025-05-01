@@ -21,6 +21,7 @@ class Journal(models.Model):
     journal_name = models.CharField(max_length=1000)
     journal_slug = models.SlugField(unique=True, blank=True, null=True, help_text="Leave blank to auto-populate")
     journal_abbreviation = models.CharField(max_length=1000, help_text="e.g: IJPRSS")
+    journal_ISSN = models.CharField(max_length=1000)
     journal_cover = CloudinaryField('image')
     journal_description = RichTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -72,30 +73,30 @@ class Article(models.Model):
         if not self.article_slug:
             self.article_slug = slugify(self.article_title)
 
-       # Only upload if a new file is provided
-        if self.article_file and hasattr(self.article_file, 'file'):
-            print("HERE 1")
-            file_extension = os.path.splitext(self.article_file.name)[1]
-            safe_file_name = f"{self.article_title.replace(' ', '_').lower()}{file_extension}"
+    #    # Only upload if a new file is provided
+    #     if self.article_file and hasattr(self.article_file, 'file'):
+    #         print("HERE 1")
+    #         file_extension = os.path.splitext(self.article_file.name)[1]
+    #         safe_file_name = f"{self.article_title.replace(' ', '_').lower()}{file_extension}"
 
 
-             # ✅ Read the file as binary and upload to ImageKit
-            self.article_file.seek(0)  # Reset pointer to start
-            file_content = self.article_file.read()  # Read file bytes
+    #          # ✅ Read the file as binary and upload to ImageKit
+    #         self.article_file.seek(0)  # Reset pointer to start
+    #         file_content = self.article_file.read()  # Read file bytes
 
-            # ✅ Use ContentFile to create a file-like object for ImageKit
-            django_file = ContentFile(file_content, name=safe_file_name)
+    #         # ✅ Use ContentFile to create a file-like object for ImageKit
+    #         django_file = ContentFile(file_content, name=safe_file_name)
 
-            upload = imagekit.upload_file(
-                file=django_file.file,  # ✅ Pass a file-like object, not raw bytes
-                file_name=safe_file_name,
-            )
+    #         upload = imagekit.upload_file(
+    #             file=django_file.file,  # ✅ Pass a file-like object, not raw bytes
+    #             file_name=safe_file_name,
+    #         )
 
-            # ✅ Retrieve the uploaded file URL and size
-            url = upload.response_metadata.raw["url"]
+    #         # ✅ Retrieve the uploaded file URL and size
+    #         url = upload.response_metadata.raw["url"]
 
 
-            print("Uploaded file URL:", url)
+            # print("Uploaded file URL:", url)
 
         super().save(*args, **kwargs)
 
