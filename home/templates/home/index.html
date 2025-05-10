@@ -1,3 +1,4 @@
+{% load extras %}
 {% load static %}
 
 <!doctype html>
@@ -332,17 +333,19 @@
 								<!--************************************
 										Previous Posts Start
 								*************************************-->
-									<!-- <section class="sj-haslayout sj-sectioninnerspace">
+									<section class="sj-haslayout sj-sectioninnerspace">
 										<div class="sj-borderheading">
 											<h3>Previous Issues</h3>
 											<a class="sj-btnview" href="javascript:void(0);">View All</a>
 										</div>
 										<div class="sj-previousissues">
 											<ul class="sj-navtabs nav" id="myTab" role="tablist">
+												{% for year, articles in grouped_articles.items %}
 												<li class="nav-item">
-													<a class="nav-link active" id="home-tab" data-toggle="tab" href="index.html#2018" role="tab" aria-controls="2018" aria-selected="true">Issues From: <span>2018</span></a>
+													<a class="nav-link {% if forloop.counter == 1 %} active {% endif %}" id="{{ year }}" data-toggle="tab" href="#{{ year }}" role="tab" aria-controls="{{ year }}" {% if forloop.counter == 1 %} aria-selected="true" {% else %} aria-selected="false" {% endif %}>Issues From: <span>{{ year }}</span></a>
 												</li>
-												<li class="nav-item">
+												{% endfor %}
+												<!-- <li class="nav-item">
 													<a class="nav-link" id="profile-tab" data-toggle="tab" href="index.html#2017" role="tab" aria-controls="2017" aria-selected="false">Issues From: <span>2017</span></a>
 												</li>
 												<li class="nav-item">
@@ -356,155 +359,38 @@
 												</li>
 												<li class="nav-item">
 													<a class="nav-link" id="contact-tabb" data-toggle="tab" href="index.html#2013" role="tab" aria-controls="2013" aria-selected="false">Issues From: <span>2013</span></a>
-												</li>
+												</li> -->
 											</ul>
 											<div class="sj-tabcontent tab-content" id="myTabContent">
-												<div class="tab-pane fade show active" id="2018" role="tabpanel" aria-labelledby="home-tab">
+												{% for year, articles in grouped_articles.items %}
+												<div class="tab-pane fade {% if forloop.counter == 1 %} show active {% endif %}" id="{{ year }}" role="tabpanel" aria-labelledby="{{ year }}">
 													<div id="sj-issuesslider-2018" class="sj-issuesslider-2018 sj-issuesslider owl-carousel">
+														{% for group in articles|slice:":10"|chunked:4 %}
 														<div class="item">
-															<article class="sj-post sj-editorchoice sj-smallpost">
-										
+															{% for article in group %}
+															<article class="sj-post sj-editorchoice">
 																<div class="sj-postcontent">
 																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Coleman Hoff</a></span>
-																		<h3><a href="javascript:void(0);">Toward Better-Quality Compounded Drugs</a></h3>
+																		<span class="sj-username"><a href="javascript:void(0);">
+																			{{ article.author.first_name }} {{ article.author.last_name }}
+																
+																			{% if article.co_authors %}, {{ article.co_authors }} {% endif %}
+																		</a></span>
+																		<h3><a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">{{ article.article_title }}</a></h3>
 																	</div>
 																	<div class="sj-description">
-																		<p>Consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco...</p>
+																		<p>{{ article.abstract_snippet }}</p>
 																	</div>
-																	<a class="sj-btn" href="javascript:void(0);">View Full Article</a>
+																	<a class="sj-btn" href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">View Full Article</a>
+																	<a class="sj-btn sj-btnactive" href="{{ article.article_file }}" download>Download Article</a>
 																</div>
 															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-										
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Coleman Hoff</a></span>
-																		<h3><a href="javascript:void(0);">Toward Better-Quality Compounded Drugs</a></h3>
-																	</div>
-																	<div class="sj-description">
-																		<p>Consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco...</p>
-																	</div>
-																	<a class="sj-btn" href="javascript:void(0);">View Full Article</a>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-										
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Coleman Hoff</a></span>
-																		<h3><a href="javascript:void(0);">Toward Better-Quality Compounded Drugs</a></h3>
-																	</div>
-																	<div class="sj-description">
-																		<p>Consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco...</p>
-																	</div>
-																	<a class="sj-btn" href="javascript:void(0);">View Full Article</a>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-										
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Coleman Hoff</a></span>
-																		<h3><a href="javascript:void(0);">Toward Better-Quality Compounded Drugs</a></h3>
-																	</div>
-																	<div class="sj-description">
-																		<p>Consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco...</p>
-																	</div>
-																	<a class="sj-btn" href="javascript:void(0);">View Full Article</a>
-																</div>
-															</article>
+															{% endfor %}
 														</div>
-														<div class="item">
-															<article class="sj-post sj-editorchoice sj-smallpost">
-															
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Coleman Hoff</a></span>
-																		<h3><a href="javascript:void(0);">Toward Better-Quality Compounded Drugs</a></h3>
-																	</div>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-															
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Kimberly Delapena</a></span>
-																		<h3><a href="javascript:void(0);">Swallowing a Spy</a></h3>
-																	</div>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-																<figure class="sj-postimg">
-																	<img src="images/editorchoice/img-06.jpg" alt="image description">
-																</figure>
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Milan Poat</a></span>
-																		<h3><a href="javascript:void(0);">Emergency Legal Authority &amp; the Crisis</a></h3>
-																	</div>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-																<figure class="sj-postimg">
-																	<img src="images/editorchoice/img-07.jpg" alt="image description">
-																</figure>
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Camilla Hofstetter</a></span>
-																		<h3><a href="javascript:void(0);">Talaromyces marneffei Infection</a></h3>
-																	</div>
-																</div>
-															</article>
-														</div>
-														<div class="item">
-															<article class="sj-post sj-editorchoice sj-smallpost">
-																<figure class="sj-postimg">
-																	<img src="images/editorchoice/img-04.jpg" alt="image description">
-																</figure>
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Coleman Hoff</a></span>
-																		<h3><a href="javascript:void(0);">Toward Better-Quality Compounded Drugs</a></h3>
-																	</div>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-																<figure class="sj-postimg">
-																	<img src="images/editorchoice/img-05.jpg" alt="image description">
-																</figure>
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Kimberly Delapena</a></span>
-																		<h3><a href="javascript:void(0);">Swallowing a Spy</a></h3>
-																	</div>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-																<figure class="sj-postimg">
-																	<img src="images/editorchoice/img-06.jpg" alt="image description">
-																</figure>
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Milan Poat</a></span>
-																		<h3><a href="javascript:void(0);">Emergency Legal Authority &amp; the Crisis</a></h3>
-																	</div>
-																</div>
-															</article>
-															<article class="sj-post sj-editorchoice sj-smallpost">
-																<figure class="sj-postimg">
-																	<img src="images/editorchoice/img-07.jpg" alt="image description">
-																</figure>
-																<div class="sj-postcontent">
-																	<div class="sj-head">
-																		<span class="sj-username"><a href="javascript:void(0);">Camilla Hofstetter</a></span>
-																		<h3><a href="javascript:void(0);">Talaromyces marneffei Infection</a></h3>
-																	</div>
-																</div>
-															</article>
-														</div>
+														{% endfor %}
 													</div>
 												</div>
+												{% endfor %}
 												<div class="tab-pane fade" id="2017" role="tabpanel" aria-labelledby="profile-tab">
 													<div id="sj-issuesslider-2017" class="sj-issuesslider-2017 sj-issuesslider owl-carousel">
 														<div class="item">
@@ -1217,7 +1103,7 @@
 												</div>
 											</div>
 										</div>
-									</section> -->
+									</section>
 								<!--************************************
 										Previous Posts End
 								*************************************-->

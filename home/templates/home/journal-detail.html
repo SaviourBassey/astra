@@ -239,10 +239,10 @@
 					<div class="row">
 						<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 							<div class="sj-innerbannercontent">
-								<h1>Article Title Here</h1>
+								<h1>{{ journal.journal_abbreviation }}</h1>
 								<ol class="sj-breadcrumb">
 									<li><a href="javascript:void(0);">Home</a></li>
-									<li><a href="javascript:void(0);">Articles</a></li>
+									<li><a href="javascript:void(0);">Journals</a></li>
 								</ol>
 							</div>
 						</div>
@@ -263,8 +263,8 @@
 								<div id="sj-content" class="sj-content">
 									<div class="sj-articledetail">
 										<ul class="sj-downloadprint">
-											{% comment %} <li><a href="javascript:void(0);"><i class="fa fa-print"></i><span>Print Now</span></a></li> {% endcomment %}
-											<li><a href="javascript:void(0);"><i class="fa fa-envelope"></i><span>Email Us</span></a></li>
+											<li><a href="javascript:void(0);"><i class="fas fa-barcode"></i><span><b>ISSN: </b>{{ journal.journal_ISSN }}</span></a></li>
+											<li><a href="mailto:wordastrapublisher@gmail.com"><i class="fas fa-envelope"></i><span>Email Us</span></a></li>
 											{% comment %} <li><a href="javascript:void(0);"><i class="fa fa-download"></i><span>Download</span></a></li> {% endcomment %}
 										</ul>
 										<figure class="sj-articledetailimg">
@@ -331,7 +331,7 @@
 									</div> -->
 									<div class="sj-widget sj-widgetnoticeboard">
 										<div class="sj-widgetheading">
-											<h3>Notice Board</h3>
+											<h3><b>Notice Board</b></h3>
 										</div>
 										<div class="sj-widgetcontent">
 											<ul>
@@ -342,7 +342,7 @@
 										</div>
 									</div>
 									<div class="sj-widget sj-widgetadd">
-										<span class="sj-headtitle">Advertisment 270 x270</span>
+										<!-- <span class="sj-headtitle">Advertisment 270 x270</span> -->
 										<div class="sj-widgetcontent">
 											<figure class="sj-addimage"><a href="javascript:void(0);"><img src="{% static 'images/ads.jpeg' %}" alt="image description"></a></figure>
 										</div>

@@ -17,6 +17,27 @@ def slugify_filename(title):
     return re.sub(r'[^a-zA-Z0-9-_]', '-', title).lower()
 
 
+
+class Volume(models.Model):
+    number = models.PositiveIntegerField(help_text="Volume number")
+    year = models.PositiveIntegerField(help_text="e.g., 2025")
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Volume {self.number}, {self.year}"
+    
+
+class Issue(models.Model):
+    volume = models.ForeignKey(Volume, on_delete=models.CASCADE, related_name="issues")
+    number = models.PositiveIntegerField(help_text="Issue number")
+    month = models.CharField(max_length=20, help_text="e.g., 'March', 'May'")
+    publish_date = models.DateField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Issue {self.number}, {self.month}, {self.volume}"
+
+
 class Journal(models.Model):
     journal_name = models.CharField(max_length=1000)
     journal_slug = models.SlugField(unique=True, blank=True, null=True, help_text="Leave blank to auto-populate")
@@ -33,21 +54,14 @@ class Journal(models.Model):
         if not self.journal_slug:
             self.journal_slug = slugify(self.journal_name)
         super().save(*args, **kwargs)
-    
-
-class Volume(models.Model):
-    volume = models.CharField(max_length=1000, help_text="e.g: vol. 1")
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.volume
 
 
 class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    journal_category = models.ForeignKey(Journal, blank=True, null=True, on_delete=models.CASCADE)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name="articles", null=True)
     article_title = models.CharField(max_length=1000)
     article_slug = models.SlugField(unique=True, blank=True, null=True, help_text="Leave blank to auto-populate")
-    journal_category = models.ForeignKey(Journal, blank=True, null=True, on_delete=models.CASCADE)
     co_authors = models.CharField(max_length=1000, blank=True, null=True, help_text="seprate each co-authors with comma")
     article_keywords = models.CharField(max_length=1000, help_text="seprate each keywords with comma")
     article_DOI = models.CharField(max_length=1000, blank=True, null=True)
@@ -55,7 +69,7 @@ class Article(models.Model):
     article_file_url = models.URLField(blank=True, null=True)
     article_file_size = models.PositiveIntegerField(blank=True, null=True, help_text="File size in bytes", editable=False)
     article_file = models.FileField(upload_to="articles/", blank=True, null=True)
-    article_volume = models.ForeignKey(Volume, blank=True, null=True, on_delete=models.CASCADE)
+    # article_volume = models.ForeignKey(Volume, blank=True, null=True, on_delete=models.CASCADE)
     publish = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)

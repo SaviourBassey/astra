@@ -5,21 +5,39 @@ from dashboard.models import Article, Journal
 from .imagekitconfig import imagekit
 import os
 import cloudinary.uploader
+from collections import defaultdict
 
 # Create your views here.
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
-        featured_article = Article.objects.filter(featured=True).order_by("-timestamp")
+        featured_article = Article.objects.filter(featured=True, publish=True).order_by("-timestamp")
+        print(featured_article)
 
         # Split the articles into chunks of 3
         grouped_features_articles = [featured_article[i:i+3] for i in range(0, len(featured_article), 3)]
 
         all_journals = Journal.objects.all().order_by("-timestamp")
 
+
+        # Code to group by year of issue
+        articles = Article.objects.select_related('issue__volume').filter(publish=True).order_by('-timestamp')
+    
+        grouped_articles = defaultdict(list)
+
+        for article in articles:
+            if article.issue and article.issue.volume:
+                year = article.issue.volume.year
+                if len(grouped_articles[year]) < 10:
+                    grouped_articles[year].append(article)
+
+        # Sort years descending
+        grouped_articles = dict(sorted(grouped_articles.items(), reverse=True))
+
         context = {
             "grouped_features_articles":grouped_features_articles,
-            "all_journals":all_journals
+            "all_journals":all_journals,
+            'grouped_articles': grouped_articles
         }
         return render(request, "home/index.html", context)
     
