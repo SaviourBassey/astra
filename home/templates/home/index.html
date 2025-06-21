@@ -224,7 +224,7 @@
 								</div>
 							</div> -->
 							<div class="sj-postbook">
-								<div class="sj-frontcover"><img style="height: 400px; width: 100%;" src="{% static 'images/astra_journal_banneer.jpeg' %}" alt="image description"></div>
+								<div class="sj-frontcover"><img id="index-banner" style="height: 400px; width: 100%;" src="{% static 'images/astra_journal_banneer.jpeg' %}" alt="image description"></div>
 							</div>
 						</div>
 						<!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6">
@@ -1233,6 +1233,19 @@
 			<!--************************************
 					Main End
 			*************************************-->
+
+			<script>
+				const img = document.getElementById('index-banner');
+				const screenWidth = window.innerWidth;
+
+				if (screenWidth <= 480) { 
+					img.src = "{% static 'images/WORD-ASTRA-BANNER-mobilepng.png' %}";
+					img.style.height = "20rem"
+				} else {
+					img.src = "{% static 'images/WORD-ASTRA-BANNER.png' %}";
+					img.style.height = "25rem"
+				}
+			</script>
 
 			{% endblock body %}
 			<!--************************************
