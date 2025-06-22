@@ -259,7 +259,7 @@
 							<div class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
 								<div id="sj-content" class="sj-content">
 									<div class="sj-authorguidelines">
-										<figure class="sj-guidelineimg" style="height: 350px;"><img style="height: 100%;" src="{% static 'images/astra_journal_editorial_board.jpeg' %}" alt="image description"></figure>
+										<figure class="sj-guidelineimg" style="height: 350px;"><img id="editorial-banner" src="{% static 'images/astra_journal_editorial_board.jpeg' %}" alt="image description"></figure>
 										<div class="sj-introduction sj-sectioninnerspace">
 											<span>Meet Our Experts</span>
                                             <h4>The Editorial Board of Word Astra Journals</h4>
@@ -414,6 +414,19 @@
 			<!--************************************
 					Main End
 			*************************************-->
+
+			<script>
+				const img = document.getElementById('editorial-banner');
+				const screenWidth = window.innerWidth;
+
+				if (screenWidth <= 480) { 
+					img.src = "{% static 'images/WORD-ASTRA-EDITORIAL-MOBILE.png' %}";
+					img.style.height = "17rem"
+				} else {
+					img.src = "{% static 'images/WORD-ASTRA-EDITORIAL-DESKTOP.png' %}";
+					img.style.height = "22rem"
+				}
+			</script>
 
             {% endblock body %}
 			<!--************************************

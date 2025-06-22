@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from dashboard.models import Article, Journal
+from dashboard.models import Article, Journal,  Volume, Issue
 from .imagekitconfig import imagekit
 import os
 import cloudinary.uploader
 from collections import defaultdict
+from django.db.models import Prefetch
+from django.db.models import Q
 
 # Create your views here.
 
@@ -49,21 +51,59 @@ class AboutView(View):
 
 class ArticleListView(View):
     def get(self, request, *args, **kwargs):
-        filter_kwargs = {}
 
-        # Loop through query parameters and add non-empty values to filter_kwargs
-        for key, value in request.GET.items():
-            if value:  # Only add non-empty parameters
-                filter_kwargs[key] = value
+        journals = Journal.objects.all()
+        volumes = Volume.objects.all()
+        issues = Issue.objects.all()
+        
 
-        # Apply filters only if there are any filtering conditions
-        if filter_kwargs:
-            all_article = Article.objects.filter(**filter_kwargs).filter(publish=True).order_by("-timestamp")
-        else:
-            all_article = Article.objects.filter(publish=True).order_by("-timestamp")
+        # Get filter values from request
+        search_query = request.GET.get('search', '')
+        journal_id = request.GET.get('journal')
+        volume_id = request.GET.get('volume')
+        issue_id = request.GET.get('issue')
+        year = request.GET.get('year')
+        submit = request.GET.get('submit')
+
+        # Start with all articles
+        articles = Article.objects.select_related('journal_category', 'issue__volume')
+
+        if submit == "reset":
+            return redirect("home:all_articles_view")
+
+        # Apply filters
+        if search_query:
+            articles = articles.filter(article_title__icontains=search_query)
+        if journal_id:
+            articles = articles.filter(journal_category__id=journal_id)
+        if volume_id:
+            articles = articles.filter(issue__volume__id=volume_id)
+        if issue_id:
+            articles = articles.filter(issue__id=issue_id)
+        if year:
+            articles = articles.filter(issue__volume__year=year)
+
 
         context = {
-            "all_article":all_article
+            "all_article":articles,
+            'journals': journals,
+            'volumes': volumes,
+            'issues': issues,
+        }
+
+
+        context = {
+            'all_article': articles.distinct(),
+            'journals': journals,
+            'volumes': volumes,
+            'issues': issues,
+            'selected': {
+                'journal': journal_id,
+                'volume': volume_id,
+                'issue': issue_id,
+                'year': year,
+                "query": search_query
+            }
         }
         return render(request, "home/articles.html", context)
     

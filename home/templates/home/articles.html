@@ -260,113 +260,85 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-3">
-								<aside id="sj-sidebarvtwo" class="sj-sidebar">
+								<form id="sj-sidebarvtwo" class="sj-sidebar" method="get">
 									<div class="sj-widget sj-widgetsearch">
 										<div class="sj-widgetcontent">
-											<form class="sj-formtheme sj-formsearch">
+											<div class="sj-formtheme sj-formsearch">
 												<fieldset>
+													{% if selected.query %}
+													<input type="search" name="search" class="form-control" value="{{ selected.query }}">
+													{% else %}
 													<input type="search" name="search" class="form-control" placeholder="Search here">
-													<button type="submit" class="sj-btnsearch"><i class="lnr lnr-magnifier"></i></button>
+													{% endif %}
+													<button type="submit" class="sj-btnsearch"><i class="fas fa-search"></i></button>
 												</fieldset>
-											</form>
+											</div>
 										</div>
 									</div>
 									<div class="sj-widget sj-widgetspeciality">
 										<div class="sj-widgetheading">
-											<h3>By Specialty</h3>
+											<h3>By Journal</h3>
 										</div>
 										<div class="sj-widgetcontent">
 											<div class="sj-selectgroup">
-												<span class="sj-checkbox">
-													<input id="sj-viewall" type="checkbox" name="speciality" value="sj-viewall">
-													<label for="sj-viewall">View All<em>(230)</em></label>
-												</span>
-												<span class="sj-checkbox">
+												<select name="journal" class="sj-checkbox">
+													<option value="">All Journals</option>
+													{% for journal in journals %}
+														<option value="{{ journal.id }}" {% if selected.journal == journal.id|stringformat:"s" %}selected{% endif %}>{{ journal.journal_abbreviation }}</option>
+													{% endfor %}
+												</select>
+												<!-- <span class="sj-checkbox">
 													<input id="sj-oncology" type="checkbox" name="speciality" value="sj-oncology">
 													<label for="sj-oncology">Hematology/Oncology<em>(37)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-care" type="checkbox" name="speciality" value="sj-care">
-													<label for="sj-care">Pulmonary/Critical Care<em>(29)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-padiatrics" type="checkbox" name="speciality" value="sj-padiatrics">
-													<label for="sj-padiatrics">Pediatrics<em>(27)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-neurology" type="checkbox" name="speciality" value="sj-neurology">
-													<label for="sj-neurology">Neurology/Neurosurgery<em>(23)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-disease" type="checkbox" name="speciality" value="sj-disease">
-													<label for="sj-disease">Infectious Disease<em>(22)</em></label>
-												</span>
+												</span> -->
 											</div>
 										</div>
 									</div>
 									<div class="sj-widget sj-widgetarticles">
 										<div class="sj-widgetheading">
-											<h3>By Article Type</h3>
+											<h3>By Volume</h3>
 										</div>
 										<div class="sj-widgetcontent">
 											<div class="sj-selectgroup">
-												<span class="sj-checkbox">
-													<input id="sj-viewalltwo" type="checkbox" name="speciality" value="sj-viewalltwo">
-													<label for="sj-viewalltwo">View All<em>(216)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-psddesign" type="checkbox" name="speciality" value="sj-psddesign">
-													<label for="sj-psddesign">Psd Design<em>(37)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-htmltemplate" type="checkbox" name="speciality" value="sj-htmltemplate">
-													<label for="sj-htmltemplate">HTML Template<em>(29)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-wordpress" type="checkbox" name="speciality" value="sj-wordpress">
-													<label for="sj-wordpress">Wordpress<em>(27)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-joomla" type="checkbox" name="speciality" value="sj-joomla">
-													<label for="sj-joomla">Joomla<em>(23)</em></label>
-												</span>
+												<select name="volume" class="sj-checkbox">
+													<option value="">All Volumes</option>
+													{% for volume in volumes %}
+														<option value="{{ volume.id }}" {% if selected.volume == volume.id|stringformat:"s" %}selected{% endif %}>{{ volume }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="sj-widget sj-widgetarticles">
+										<div class="sj-widgetheading">
+											<h3>By Issues</h3>
+										</div>
+										<div class="sj-widgetcontent">
+											<div class="sj-selectgroup">
+												<select name="issue">
+													<option value="">All Issues</option>
+													{% for issue in issues %}
+														<option value="{{ issue.id }}" {% if selected.issue == issue.id|stringformat:"s" %}selected{% endif %}>{{ issue }}</option>
+													{% endfor %}
+												</select>
 											</div>
 										</div>
 									</div>
 									<div class="sj-widget sj-widgetdate">
 										<div class="sj-widgetheading">
-											<h3>By Date</h3>
+											<h3>By Year</h3>
 										</div>
 										<div class="sj-widgetcontent">
 											<div class="sj-selectgroup">
-												<span class="sj-checkbox">
-													<input id="sj-viewallthree" type="checkbox" name="speciality" value="sj-viewallthree">
-													<label for="sj-viewallthree">View All<em>(216)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-tenyear" type="checkbox" name="speciality" value="sj-tenyear">
-													<label for="sj-tenyear">Past 10 Years<em>(37)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-fifteenyears" type="checkbox" name="speciality" value="sj-fifteenyears">
-													<label for="sj-fifteenyears">Past 15 Years<em>(29)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-twentyyears" type="checkbox" name="speciality" value="sj-twentyyears">
-													<label for="sj-twentyyears">Past 20 Years<em>(27)</em></label>
-												</span>
-												<span class="sj-checkbox">
-													<input id="sj-twentyfiveyears" type="checkbox" name="speciality" value="sj-twentyfiveyears">
-													<label for="sj-twentyfiveyears">Past 25 Years<em>(23)</em></label>
-												</span>
+												<input class="sj-checkbox" type="number" name="year" placeholder="Year" value="{{ selected.year }}">
 											</div>
 											<div class="sj-filterbtns">
-												<a class="sj-btn" href="javascript:void(0)">Apply Filter</a>
-												<a class="sj-btn" href="javascript:void(0)">Reset All</a>
+												<button type="submit" class="sj-btn sj-btnactive">Apply Filter</button>
+												<button type="submit" class="sj-btn" value="reset" name="submit">Reset All</button>
 											</div>
 										</div>
 									</div>
-								</aside>
+								</form>
 							</div>
 							<div class="col-12 col-sm-12 col-md-7 col-lg-4 col-xl-6">
 								<div id="sj-content" class="sj-content">
@@ -376,15 +348,15 @@
 											<img src="{% static 'images/upload-articlebg.jpg' %}" alt="image description">
 											<figcaption>
 												<div class="sj-uploadcontent">
-													<span>Do You Want To Upload Your Article?</span>
-													<h3>Submit Now &amp; Make Your Online Presence</h3>
+													<span>Want To Upload Your Article?</span>
+													<h3>Publish in our upcoming Issue</h3>
 													<a class="sj-btn" href="{% url 'home:submit_article_view' %}">Submit Now</a>
 												</div>
 											</figcaption>
 										</figure>
 									</div>
 									<div class="sj-articles">
-										<form class="sj-formtheme sj-formsortitems">
+										<!-- <form class="sj-formtheme sj-formsortitems">
 											<fieldset>
 												<div class="form-group">
 													<em>Sort By: </em>
@@ -420,7 +392,7 @@
 													</span>
 												</div>
 											</fieldset>
-										</form>
+										</form> -->
 										{% for article in all_article %}
 										<article class="sj-post sj-editorchoice">
 											<div class="sj-postcontent">
