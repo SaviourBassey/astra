@@ -162,25 +162,3 @@ STATIC_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "accounts:login_view"
-
-
-import cloudinary
-          
-cloudinary.config( 
-  cloud_name = "dmpxni4ku", 
-  api_key = "589853123957555", 
-  api_secret = "qXi49wce6G3lb1GitG69KQ_7HZ0",
-  secure = True,
-)
-
-
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-AWS_S3_ENDPOINT_URL = 'https://mooauvjorcmzwqgjjsmg.supabase.co/storage/v1/s3'
-AWS_ACCESS_KEY_ID = config('BUCKET_SECRET_KEY')
-AWS_SECRET_ACCESS_KEY = config('BUCKET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'astra-bucket'
-AWS_S3_REGION_NAME = 'eu-central-1'
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
-# AWS_S3_ADDRESSING_STYLE = "virtual"  # or "path" if virtual gives issues
