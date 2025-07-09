@@ -2,14 +2,26 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.models import Article, Journal,  Volume, Issue
-from .imagekitconfig import imagekit
-import os
-import cloudinary.uploader
+from supabase import create_client, Client
+from decouple import config
+from django.utils.text import slugify
+import time
+from django.contrib import messages
 from collections import defaultdict
-from django.db.models import Prefetch
-from django.db.models import Q
+
+
 
 # Create your views here.
+
+def generate_unique_slug(title):
+    base_slug = slugify(title)
+    unique_slug = base_slug
+    counter = 1
+    while Article.objects.filter(article_slug=unique_slug).exists():
+        unique_slug = f"{base_slug}-{counter}"
+        counter += 1
+    return unique_slug
+
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
@@ -66,7 +78,7 @@ class ArticleListView(View):
         submit = request.GET.get('submit')
 
         # Start with all articles
-        articles = Article.objects.select_related('journal_category', 'issue__volume')
+        articles = Article.objects.select_related('journal_category', 'issue__volume').filter(publish=True)
 
         if submit == "reset":
             return redirect("home:all_articles_view")
@@ -112,12 +124,16 @@ class ArticleDetailView(View):
     def get(self, request, SLUG, *args, **kwargs):
         try:
             article = Article.objects.get(article_slug=SLUG)
+            co_author_list = (article.co_authors).split(",")
+            print(co_author_list)
             related_articles = Article.objects.filter(journal_category=article.journal_category).exclude(id=article.id).order_by("-timestamp")[:3]
         except:
             article = None
+            co_author_list = None
             related_articles = None
         context = {
             "article":article,
+            "co_author_list":co_author_list,
             "related_articles":related_articles
         }
         return render(request, "home/articledetail.html", context)
@@ -147,53 +163,77 @@ class SubmitArticleView(LoginRequiredMixin, View):
         }
         return render(request, "home/submitarticle.html", context)
     
+    
+
     def post(self, request, *args, **kwargs):
         article_title = request.POST.get("article_title")
-        journal_cat_id = int(request.POST.get("journal_cat_id"))
-        co_authors = request.POST.get("co_authors")
-        article_keywords = request.POST.get("article_keywords")
-        article_abstract = request.POST.get("article_abstract")
+        try:
+            journal_cat_id = int(request.POST.get("journal_cat_id"))
+            journal_category = Journal.objects.filter(id=journal_cat_id).first()
+        except (ValueError, TypeError):
+            journal_category = None
+
+        co_authors = request.POST.get("co_authors", "").strip()
+        article_keywords = request.POST.get("article_keywords", "").strip()
+        article_abstract = request.POST.get("article_abstract", "").strip()
         article_file = request.FILES.get("article_file")
 
-        # Ensure the journal category exists
-        journal_id = Journal.objects.filter(id=journal_cat_id).first()
+        # 🔒 Validate file
+        if not article_file or article_file.content_type != 'application/pdf':
+            print("HERE")
+            messages.error(request, "Only PDF files are allowed.")
+            return redirect("home:submit_article_view")
 
-        file_url = None
-        imagekit_url = None
-        file_size = 0
+        # 🔄 Generate unique file name
+        file_name = generate_unique_slug(article_title) + ".pdf"
+        path = f"articles/{file_name}"
 
-        if article_file:
-            file_extension = os.path.splitext(article_file.name)[1]
-            safe_file_name = f"{article_title.replace(' ', '_').lower()}{file_extension}"
+        # 📡 Connect to Supabase
+        supabase_url = config('SUPABASE_URL')
+        supabase_key = config('SUPABASE_KEY')
+        supabase: Client = create_client(supabase_url, supabase_key)
 
-            # ✅ Read the file correctly using Django's file handling methods
-            article_file.seek(0)  # Ensure the file pointer is at the beginning
+        try:
             file_content = article_file.read()
-
-            # ✅ Upload to ImageKit
-            upload = imagekit.upload_file(
-                file=file_content,  # ✅ Pass binary content, NOT a file path
-                file_name=safe_file_name,
+            # 📤 Upload the file
+            response = supabase.storage.from_("astra-bucket").upload(
+                file=file_content,
+                path=path,
+                file_options={
+                    "cache-control": "3600",
+                    "upsert": "false",
+                    "content-type": "application/pdf"
+                }
             )
 
-            # ✅ Retrieve the uploaded file URL
-            url = upload.response_metadata.raw["url"]
-            print("Uploaded file URL:", url)
+            # 🌍 Get public URL with cache busting
+            public_url = supabase.storage.from_("astra-bucket").get_public_url(path)
+            public_url += f"?v={int(time.time())}"
 
-        # 🔹 Step 4: Save Article
-        Article.objects.create(
-            author=request.user,
-            article_title=article_title,
-            journal_category=journal_id,
-            co_authors=co_authors,
-            article_keywords=article_keywords,
-            article_abstract=article_abstract,
-            article_file=None,  # Save Cloudinary URL
-            article_file_url=url,  # Save ImageKit URL
-            article_file_size=file_size,  # Save file size in bytes
-        )
+            # 📏 Get file size in bytes
+            article_file_size = article_file.size
 
-        return redirect("dashboard:dashboard_under_review_view")
+            # 📝 Create the article
+            Article.objects.create(
+                author=request.user,
+                article_title=article_title,
+                journal_category=journal_category,
+                co_authors=co_authors,
+                article_keywords=article_keywords,
+                article_abstract=article_abstract,
+                article_file=None,  # Prevent local storage
+                article_file_url=public_url,
+                article_file_size=article_file_size,
+            )
+
+            messages.success(request, "Article submitted successfully.")
+            return redirect("dashboard:dashboard_under_review_view")
+
+        except Exception as e:
+            print("Error during article upload:", e)
+            messages.error(request, "An unexpected error occurred.")
+            return redirect("home:submit_article_view")
+
     
 
 

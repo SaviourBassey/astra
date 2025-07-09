@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from cloudinary.models import CloudinaryField
 from ckeditor.fields import RichTextField
+from django.utils import timezone
+from supabase import create_client
+from decouple import config
+import time
+
+
 import cloudinary.uploader
 import re
 from home.imagekitconfig import imagekit
@@ -10,12 +16,6 @@ import os
 from django.core.files.base import ContentFile
 
 # Create your models here.
-
-
-def slugify_filename(title):
-    """Convert title to a clean filename (good for SEO)."""
-    return re.sub(r'[^a-zA-Z0-9-_]', '-', title).lower()
-
 
 
 class Volume(models.Model):
@@ -59,7 +59,7 @@ class Journal(models.Model):
 class Article(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     journal_category = models.ForeignKey(Journal, blank=True, null=True, on_delete=models.CASCADE)
-    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name="articles", null=True)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name="articles", null=True, blank=True)
     article_title = models.CharField(max_length=1000)
     article_slug = models.SlugField(unique=True, blank=True, null=True, help_text="Leave blank to auto-populate")
     co_authors = models.CharField(max_length=1000, blank=True, null=True, help_text="seprate each co-authors with comma")
@@ -73,6 +73,7 @@ class Article(models.Model):
     publish = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    published_at = models.DateTimeField(blank=True, null=True, help_text="Leave blank to auto-populate")
 
     def __str__(self):
         return self.article_title
@@ -83,35 +84,69 @@ class Article(models.Model):
         else:
             return self.article_abstract
         
+    def get_upload_filename(self):
+        slug = self.article_slug or generate_unique_slug(self.article_title)
+        return f"articles/{slug}.pdf"
+        
     def save(self, *args, **kwargs):
+        is_new = not self.pk
+
+        # Handle published_at timestamp
+        if self.pk:
+            orig = Article.objects.get(pk=self.pk)
+            if not orig.publish and self.publish:
+                self.published_at = timezone.now()
+        else:
+            if self.publish:
+                self.published_at = timezone.now()
+
+        # Generate slug if missing
         if not self.article_slug:
-            self.article_slug = slugify(self.article_title)
+            self.article_slug = generate_unique_slug(self.article_title)
 
-    #    # Only upload if a new file is provided
-    #     if self.article_file and hasattr(self.article_file, 'file'):
-    #         print("HERE 1")
-    #         file_extension = os.path.splitext(self.article_file.name)[1]
-    #         safe_file_name = f"{self.article_title.replace(' ', '_').lower()}{file_extension}"
+        # File upload logic
+        if self.article_file and hasattr(self.article_file, 'file'):
+            if self.article_file.name.endswith(".pdf"):
+                supabase_url = config('SUPABASE_URL')
+                supabase_key = config('SUPABASE_KEY')
+                supabase = create_client(supabase_url, supabase_key)
 
+                file_content = self.article_file.read()
+                file_name = f"{self.article_slug}.pdf"
+                path = f"articles/{file_name}"
 
-    #          # ✅ Read the file as binary and upload to ImageKit
-    #         self.article_file.seek(0)  # Reset pointer to start
-    #         file_content = self.article_file.read()  # Read file bytes
+                # Allow overwrite only if this is an update
+                should_upsert = not is_new
 
-    #         # ✅ Use ContentFile to create a file-like object for ImageKit
-    #         django_file = ContentFile(file_content, name=safe_file_name)
+                response = supabase.storage.from_("astra-bucket").upload(
+                    file=file_content,
+                    path=path,
+                    file_options={
+                        "cache-control": "3600",
+                        "upsert": "true" if should_upsert else "false",
+                        "content-type": "application/pdf"
+                    }
+                )
 
-    #         upload = imagekit.upload_file(
-    #             file=django_file.file,  # ✅ Pass a file-like object, not raw bytes
-    #             file_name=safe_file_name,
-    #         )
+                # Get public URL and add cache-busting query string
+                public_url = supabase.storage.from_("astra-bucket").get_public_url(path)
+                cache_buster = int(time.time())
+                self.article_file_url = f"{public_url}?v={cache_buster}"
 
-    #         # ✅ Retrieve the uploaded file URL and size
-    #         url = upload.response_metadata.raw["url"]
+                # Clear the file to avoid storing locally
+                self.article_file = None
+            else:
+                self.article_file = None
 
-
-            # print("Uploaded file URL:", url)
-
+        # Final save
         super().save(*args, **kwargs)
 
 
+def generate_unique_slug(title):
+    base_slug = slugify(title)
+    unique_slug = base_slug
+    counter = 1
+    while Article.objects.filter(article_slug=unique_slug).exists():
+        unique_slug = f"{base_slug}-{counter}"
+        counter += 1
+    return unique_slug

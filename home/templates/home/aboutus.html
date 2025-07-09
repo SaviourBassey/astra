@@ -262,7 +262,7 @@
 							<div class="col-12 col-sm-12 col-md-8 col-lg-9">
 								<div id="sj-content" class="sj-content">
 									<div class="sj-aboutus">
-										<figure class="sj-aboutusimg"><img style="height: 350px;" src="{% static 'images/word_astra_jornal_about_us.jpeg' %}" alt="image description"></figure>
+										<figure class="sj-aboutusimg"><img id="about-banner" style="height: 350px;" src="{% static 'images/WORD-ASTRA-ABOUT3.png' %}" alt="image description"></figure>
 										<div class="sj-introduction sj-sectioninnerspace">
 											<span>Word Astra: </span>
 											<h4>Advancing Research, Scholarly Publishing, and Academic Excellence</h4>
@@ -431,6 +431,21 @@
 			<!--************************************
 					Main End
 			*************************************-->
+
+
+			<script>
+				const img = document.getElementById('about-banner');
+				const screenWidth = window.innerWidth;
+
+				if (screenWidth <= 480) { 
+					img.src = "{% static 'images/WORD-ASTRA-ABOUT2.png' %}";
+					img.style.height = "17rem"
+				} else {
+					img.src = "{% static 'images/WORD-ASTRA-ABOUT3.png' %}";
+					img.style.height = "22rem"
+				}
+			</script>
+
 
 			{% endblock body %}
 			<!--************************************

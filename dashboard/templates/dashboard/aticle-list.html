@@ -295,7 +295,7 @@
 															<img src="{% static 'images/thumbnails/doc-img.jpg' %}" alt="img description">
 														</figure>
 														<div class="sj-docdescription">
-															{% with article.article_file|slice:"-1"|split:"/" as parts %}
+															{% with article.article_file.name|slice:"-1"|split:"/" as parts %}
 															<h4>{{ parts|last }}</h4>
 															{% endwith %}
 															{% if article.article_file_size %}

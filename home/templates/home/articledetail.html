@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% load custom_filters %}
+
 
 <!doctype html>
 <!--[if lt IE 7]>		<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
@@ -13,6 +15,27 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	{% block pagemeta %}
+
+	<meta name="citation_title" content="{{ article.article_title }}">
+	{% if article.author %}
+		<meta name="citation_author" content="{{ article.author.first_name }} {{ article.author.last_name }}">
+	{% endif %}
+
+	{% if co_author_list %}
+		{% for author in co_author_list %}
+		{% with author|split:" " as parts %}
+			<meta name="citation_author" content="{{ parts.1 }}, {{ parts.0 }}">
+		{% endwith %}
+		{% endfor %}
+	{% endif %}
+	<meta name="citation_publication_date" content="{{ article.published_at|date:'Y/m/d' }}">
+	<meta name="citation_journal_title" content="{{ article.journal_category.journal_name }}">
+	<meta name="citation_volume" content="{{ article.issue.volume.number }}">
+	<meta name="citation_issue" content="{{ article.issue.number }}">
+	<meta name="citation_firstpage" content="10">
+	<meta name="citation_lastpage" content="20">
+	<meta name="citation_doi" content="{{ article.article_DOI }}">
+	<meta name="citation_pdf_url" content="{{ article.article_file_url }}">
 
 	<title>{{ article.article_title }} - Astra Journal </title>
 
@@ -285,7 +308,7 @@
 											<div class="sj-description">
 												<p>{{ article.article_abstract }}</p>
 												<br>
-												<a class="sj-btn sj-btnactive" href="{{ article.article_DOI }}">Download Article</a>
+												<a class="sj-btn sj-btnactive" href="{{ article.article_file_url }}" download="">Download Article</a>
 											</div>
 										</div>
 									</div>
@@ -313,7 +336,7 @@
 												{% for article in related_articles %}
 												<li>
 													<a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">
-														<span class="sj-username"><a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">{{ article.author.first_name }} {{ article.author.last_name }}</a></span>
+														<!-- <span class="sj-username"><a href="{% url 'home:article_detail_view' SLUG=article.article_slug %}">{{ article.author.first_name }} {{ article.author.last_name }}</a></span> -->
 														<div class="sj-description">
 															<p>{{ article.article_title }}</p>
 														</div>
