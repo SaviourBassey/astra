@@ -162,3 +162,14 @@ STATIC_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "accounts:login_view"
+
+
+import cloudinary
+          
+cloudinary.config( 
+  cloud_name = "dmpxni4ku", 
+  api_key = "589853123957555", 
+  api_secret = "qXi49wce6G3lb1GitG69KQ_7HZ0",
+  secure = True,
+)
+

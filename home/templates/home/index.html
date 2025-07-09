@@ -1280,11 +1280,11 @@
 									</div>
 									<div class="sj-widgetcontent">
 										<ul>
-											<li><a href="javascript:void(0);">All Journals</a></li>
+											<li><a href="{% url 'home:all_journals_view' %}">All Journals</a></li>
 											<li><a href="{% url 'home:all_articles_view' %}">Recent Articles</a></li>
 											<li><a href="{% url 'home:editorial_board_view' %}">Editorial Board</a></li>
 											<li><a href="{% url 'home:publication_policies_view' %}">Publication Policies</a></li>
-											<li class="sj-more"><a href="javascript:void(0);">more</a></li>
+											<li><a href="{% url 'home:about_view' %}">About Us</a></li>
 										</ul>
 									</div>
 								</div>
@@ -1296,11 +1296,11 @@
 									</div>
 									<div class="sj-widgetcontent">
 										<ul>
-											<li><a href="javascript:void(0);">Authors</a></li>
-											<li><a href="javascript:void(0);">Librarians</a></li>
-											<li><a href="javascript:void(0);">Sponsors &amp; Advertisers</a></li>
-											<li><a href="javascript:void(0);">Press &amp; Media</a></li>
-											<li class="sj-more"><a href="javascript:void(0);">more</a></li>
+											<li><a href="{% url 'home:submit_article_view' %}">For Authors</a></li>
+											<li><a href="#">For Librarians</a></li>
+											<li><a href="#">Sponsors & Advertisers</a></li>
+											<li><a href="#">Press & Media</a></li>
+											<li><a href="#">Contact Us</a></li>
 										</ul>
 									</div>
 								</div>

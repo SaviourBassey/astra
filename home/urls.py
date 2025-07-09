@@ -12,4 +12,5 @@ urlpatterns = [
     path('articles/submit-article/', views.SubmitArticleView.as_view(), name="submit_article_view"),
     path('articles/<str:SLUG>/', views.ArticleDetailView.as_view(), name="article_detail_view"),
     path('journals/<str:SLUG>/', views.JournalDetailView.as_view(), name="journal_detail_view"),
+    path('all-journals/', views.JournalListView.as_view(), name="all_journals_view"),
 ]

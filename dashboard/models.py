@@ -8,13 +8,6 @@ from supabase import create_client
 from decouple import config
 import time
 
-
-import cloudinary.uploader
-import re
-from home.imagekitconfig import imagekit
-import os
-from django.core.files.base import ContentFile
-
 # Create your models here.
 
 
