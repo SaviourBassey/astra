@@ -39,7 +39,12 @@
 
 	<title>{{ article.article_title }} - Astra Journal </title>
 
-	<meta name="description" content="{{ article.article_abstract }}">
+	<meta name="description" content="by 
+		{% if article.author %}
+		{{ article.author.first_name }} {{ article.author.last_name }}
+		{% else %} 
+		{% endif} - 
+		{{ article.article_abstract }}">
 
 	<meta name="keywords" content="{{ article.article_keywords }}
 	{{ article.author.first_name }} {{ article.author.last_name }}
