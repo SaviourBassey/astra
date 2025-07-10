@@ -125,16 +125,18 @@ class ArticleDetailView(View):
         try:
             article = Article.objects.get(article_slug=SLUG)
             co_author_list = (article.co_authors).split(",")
-            print(co_author_list)
+            first_co_author = co_author_list[0]
             related_articles = Article.objects.filter(journal_category=article.journal_category).exclude(id=article.id).order_by("-timestamp")[:3]
         except:
             article = None
             co_author_list = None
             related_articles = None
+            first_co_author = None
         context = {
             "article":article,
             "co_author_list":co_author_list,
-            "related_articles":related_articles
+            "related_articles":related_articles, 
+            "first_co_author": first_co_author
         }
         return render(request, "home/articledetail.html", context)
     
