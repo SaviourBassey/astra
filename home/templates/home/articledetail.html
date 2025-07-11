@@ -23,9 +23,7 @@
 
 	{% if co_author_list %}
 		{% for author in co_author_list %}
-		{% with author|split:" " as parts %}
-			<meta name="citation_author" content="{{ parts.1 }}, {{ parts.0 }}">
-		{% endwith %}
+			<meta name="citation_author" content="{{ author }}">
 		{% endfor %}
 	{% endif %}
 	<meta name="citation_publication_date" content="{{ article.published_at|date:'Y/m/d' }}">
@@ -37,7 +35,7 @@
 	<meta name="citation_doi" content="{{ article.article_DOI }}">
 	<meta name="citation_pdf_url" content="{{ article.article_file_url }}">
 
-	<title>{{ article.article_title }} - Astra Journal </title>
+	<title>{{ article.article_title }} - {{ article.journal_category.journal_name }} </title>
 
 	<meta name="description" content="by 
 		{% if article.author %}
