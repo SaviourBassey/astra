@@ -80,9 +80,18 @@ class Article(models.Model):
     def get_upload_filename(self):
         slug = self.article_slug or generate_unique_slug(self.article_title)
         return f"articles/{slug}.pdf"
-        
+    
     def save(self, *args, **kwargs):
         is_new = not self.pk
+        old_file_name = None
+
+        if not is_new:
+            try:
+                old_instance = Article.objects.get(pk=self.pk)
+                if old_instance.article_file:
+                    old_file_name = old_instance.article_file.name
+            except Article.DoesNotExist:
+                pass
 
         # Handle published_at timestamp
         if self.pk:
@@ -97,42 +106,48 @@ class Article(models.Model):
         if not self.article_slug:
             self.article_slug = generate_unique_slug(self.article_title)
 
-        # File upload logic
+        # ✅ Upload only if file is new OR changed
         if self.article_file and hasattr(self.article_file, 'file'):
-            if self.article_file.name.endswith(".pdf"):
-                supabase_url = config('SUPABASE_URL')
-                supabase_key = config('SUPABASE_KEY')
-                supabase = create_client(supabase_url, supabase_key)
+            if is_new or self.article_file.name != old_file_name:
+                if self.article_file.name.endswith(".pdf"):
+                    self.article_file.seek(0)
+                    self.article_file_size = self.article_file.size
 
-                file_content = self.article_file.read()
-                file_name = f"{self.article_slug}.pdf"
-                path = f"articles/{file_name}"
+                    supabase_url = config('SUPABASE_URL')
+                    supabase_key = config('SUPABASE_KEY')
+                    supabase = create_client(supabase_url, supabase_key)
 
-                # Allow overwrite only if this is an update
-                should_upsert = not is_new
+                    file_content = self.article_file.read()
+                    file_name = f"{self.article_slug}.pdf"
+                    path = f"articles/{file_name}"
 
-                response = supabase.storage.from_("astra-bucket").upload(
-                    file=file_content,
-                    path=path,
-                    file_options={
-                        "cache-control": "3600",
-                        "upsert": "true" if should_upsert else "false",
-                        "content-type": "application/pdf"
-                    }
-                )
+                    try:
+                        response = supabase.storage.from_("astra-bucket").upload(
+                            path=path,
+                            file=file_content,
+                            file_options={
+                                "cache-control": "3600",
+                                "upsert": "true",  # only overwrite if update
+                                "content-type": "application/pdf"
+                            }
+                        )
+                        if "error" in response:
+                            raise Exception(response["error"])
+                    except Exception as e:
+                        raise ValueError(f"Supabase upload failed: {e}")
 
-                # Get public URL and add cache-busting query string
-                public_url = supabase.storage.from_("astra-bucket").get_public_url(path)
-                cache_buster = int(time.time())
-                self.article_file_url = f"{public_url}?v={cache_buster}"
+                    # Refresh cache-buster every upload
+                    public_url = supabase.storage.from_("astra-bucket").get_public_url(path)
+                    cache_buster = int(time.time())
+                    self.article_file_url = f"{public_url}?v={cache_buster}"
 
-                # Clear the file to avoid storing locally
-                self.article_file = None
-            else:
-                self.article_file = None
+                    self.article_file = None  # don’t save locally
+                else:
+                    self.article_file = None
 
-        # Final save
         super().save(*args, **kwargs)
+
+        
 
 
 def generate_unique_slug(title):
