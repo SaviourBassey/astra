@@ -54,7 +54,7 @@ class Article(models.Model):
     journal_category = models.ForeignKey(Journal, blank=True, null=True, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name="articles", null=True, blank=True)
     article_title = models.CharField(max_length=1000)
-    article_slug = models.SlugField(unique=True, blank=True, null=True, help_text="Leave blank to auto-populate")
+    article_slug = models.SlugField(max_length=1000, unique=True, blank=True, null=True, help_text="Leave blank to auto-populate")
     co_authors = models.CharField(max_length=1000, blank=True, null=True, help_text="seprate each co-authors with comma")
     article_keywords = models.CharField(max_length=1000, help_text="seprate each keywords with comma")
     article_DOI = models.CharField(max_length=1000, blank=True, null=True)
@@ -82,6 +82,7 @@ class Article(models.Model):
         return f"articles/{slug}.pdf"
     
     def save(self, *args, **kwargs):
+        print("Started")
         is_new = not self.pk
         old_file_name = None
 
@@ -131,8 +132,6 @@ class Article(models.Model):
                                 "content-type": "application/pdf"
                             }
                         )
-                        if "error" in response:
-                            raise Exception(response["error"])
                     except Exception as e:
                         raise ValueError(f"Supabase upload failed: {e}")
 
