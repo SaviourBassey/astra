@@ -276,7 +276,7 @@
 											<div class="sj-description">
 												{{ journal.journal_description|safe }}
 												<br>
-												<a class="sj-btn sj-btnactive" href="{% url 'home:all_articles_view' %}?journal_category={{ journal.id }}">View Journal Articles</a>
+												<a class="sj-btn sj-btnactive" href="{% url 'home:all_articles_view' %}?journal={{ journal.id }}" >View Journal Articles</a>
 											</div>
 										</div>
 									</div>

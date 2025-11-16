@@ -8,6 +8,7 @@ from django.utils.text import slugify
 import time
 from django.contrib import messages
 from collections import defaultdict
+from django.conf import settings
 
 
 
@@ -190,51 +191,54 @@ class SubmitArticleView(LoginRequiredMixin, View):
         file_name = generate_unique_slug(article_title) + ".pdf"
         path = f"articles/{file_name}"
 
-        # 📡 Connect to Supabase
-        supabase_url = config('SUPABASE_URL')
-        supabase_key = config('SUPABASE_KEY')
-        supabase: Client = create_client(supabase_url, supabase_key)
+        public_url = None 
 
-        try:
-            file_content = article_file.read()
-            # 📤 Upload the file
-            response = supabase.storage.from_("astra-bucket").upload(
-                file=file_content,
-                path=path,
-                file_options={
-                    "cache-control": "3600",
-                    "upsert": "false",
-                    "content-type": "application/pdf"
-                }
-            )
+        # 📏 Get file size in bytes
+        article_file_size = article_file.size
 
-            # 🌍 Get public URL with cache busting
-            public_url = supabase.storage.from_("astra-bucket").get_public_url(path)
-            public_url += f"?v={int(time.time())}"
+        if not settings.DEBUG:
+            # 📡 Connect to Supabase
+            supabase_url = config('SUPABASE_URL')
+            supabase_key = config('SUPABASE_KEY')
+            supabase: Client = create_client(supabase_url, supabase_key)
 
-            # 📏 Get file size in bytes
-            article_file_size = article_file.size
+            try:
+                file_content = article_file.read()
+                # 📤 Upload the file
+                response = supabase.storage.from_("astra-bucket").upload(
+                    file=file_content,
+                    path=path,
+                    file_options={
+                        "cache-control": "3600",
+                        "upsert": "false",
+                        "content-type": "application/pdf"
+                    }
+                )
 
-            # 📝 Create the article
-            Article.objects.create(
-                author=request.user,
-                article_title=article_title,
-                journal_category=journal_category,
-                co_authors=co_authors,
-                article_keywords=article_keywords,
-                article_abstract=article_abstract,
-                article_file=None,  # Prevent local storage
-                article_file_url=public_url,
-                article_file_size=article_file_size,
-            )
+                # 🌍 Get public URL with cache busting
+                public_url = supabase.storage.from_("astra-bucket").get_public_url(path)
+                public_url += f"?v={int(time.time())}"
 
-            messages.success(request, "Article submitted successfully.")
-            return redirect("dashboard:dashboard_under_review_view")
+            except Exception as e:
+                print("Error during article upload:", e)
+                messages.error(request, "An unexpected error occurred.")
+                return redirect("home:submit_article_view")
+            
+        # 📝 Create the article
+        Article.objects.create(
+            author=request.user,
+            article_title=article_title,
+            journal_category=journal_category,
+            co_authors=co_authors,
+            article_keywords=article_keywords,
+            article_abstract=article_abstract,
+            article_file=None,  # Prevent local storage
+            article_file_url=public_url,
+            article_file_size=article_file_size,
+        )
 
-        except Exception as e:
-            print("Error during article upload:", e)
-            messages.error(request, "An unexpected error occurred.")
-            return redirect("home:submit_article_view")
+        messages.success(request, "Article submitted successfully.")
+        return redirect("dashboard:dashboard_under_review_view")
 
     
 
