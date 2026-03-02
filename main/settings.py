@@ -29,9 +29,9 @@ SECRET_KEY = 'django-insecure-wagfguf3d=7e__j$c0@wkr@g9bramkan-^(cn3j7*lbm!k#*@4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1", "astra-uo3u.onrender.com", "www.wordastrajournals.com", "wordastrajournals.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "109.205.61.19", "astra-uo3u.onrender.com", "www.wordastrajournals.com", "wordastrajournals.com"]
 
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "https://astra-uo3u.onrender.com", "https://www.wordastrajournals.com"]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1", "http://109.205.61.19", "https://astra-uo3u.onrender.com", "https://www.wordastrajournals.com"]
 
 MESSAGE_TAGS = {
     messages.ERROR: "danger"
@@ -93,9 +93,6 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
-DATABASE_URL = config('DATABASE_URL')
-
 if DEBUG:
     DATABASES = {
         'default': {
@@ -105,7 +102,14 @@ if DEBUG:
     }
 else:
     DATABASES = {
-        "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": config('DATABASE_NAME'),
+            "USER": config('DATABASE_USER'),
+            "PASSWORD": config('DATABASE_PASSWORD'),
+            "HOST": config('DATABASE_HOST'),
+            "PORT": 5432,
+        }
     }
 
 
@@ -163,13 +167,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = "accounts:login_view"
 
-
-import cloudinary
-          
-cloudinary.config( 
-  cloud_name = "dmpxni4ku", 
-  api_key = "589853123957555", 
-  api_secret = "qXi49wce6G3lb1GitG69KQ_7HZ0",
-  secure = True,
-)
 

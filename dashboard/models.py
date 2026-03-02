@@ -36,7 +36,7 @@ class Journal(models.Model):
     journal_slug = models.SlugField(unique=True, blank=True, null=True, help_text="Leave blank to auto-populate")
     journal_abbreviation = models.CharField(max_length=1000, help_text="e.g: IJPRSS")
     journal_ISSN = models.CharField(max_length=1000)
-    journal_cover = CloudinaryField('image')
+    journal_cover = models.ImageField(upload_to="journal_covers/")
     journal_description = RichTextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -59,7 +59,6 @@ class Article(models.Model):
     article_keywords = models.CharField(max_length=1000, help_text="seprate each keywords with comma")
     article_DOI = models.CharField(max_length=1000, blank=True, null=True)
     article_abstract = models.TextField()
-    article_file_url = models.URLField(blank=True, null=True)
     article_file_size = models.PositiveIntegerField(blank=True, null=True, help_text="File size in bytes", editable=False)
     article_file = models.FileField(upload_to="articles/", blank=True, null=True)
     # article_volume = models.ForeignKey(Volume, blank=True, null=True, on_delete=models.CASCADE)
@@ -82,18 +81,6 @@ class Article(models.Model):
         return f"articles/{slug}.pdf"
     
     def save(self, *args, **kwargs):
-        print("Started")
-        is_new = not self.pk
-        old_file_name = None
-
-        if not is_new:
-            try:
-                old_instance = Article.objects.get(pk=self.pk)
-                if old_instance.article_file:
-                    old_file_name = old_instance.article_file.name
-            except Article.DoesNotExist:
-                pass
-
         # Handle published_at timestamp
         if self.pk:
             orig = Article.objects.get(pk=self.pk)
@@ -107,42 +94,7 @@ class Article(models.Model):
         if not self.article_slug:
             self.article_slug = generate_unique_slug(self.article_title)
 
-        # ✅ Upload only if file is new OR changed
-        if self.article_file and hasattr(self.article_file, 'file'):
-            if is_new or self.article_file.name != old_file_name:
-                if self.article_file.name.endswith(".pdf"):
-                    self.article_file.seek(0)
-                    self.article_file_size = self.article_file.size
 
-                    supabase_url = config('SUPABASE_URL')
-                    supabase_key = config('SUPABASE_KEY')
-                    supabase = create_client(supabase_url, supabase_key)
-
-                    file_content = self.article_file.read()
-                    file_name = f"{self.article_slug}.pdf"
-                    path = f"articles/{file_name}"
-
-                    try:
-                        response = supabase.storage.from_("astra-bucket").upload(
-                            path=path,
-                            file=file_content,
-                            file_options={
-                                "cache-control": "3600",
-                                "upsert": "true",  # only overwrite if update
-                                "content-type": "application/pdf"
-                            }
-                        )
-                    except Exception as e:
-                        raise ValueError(f"Supabase upload failed: {e}")
-
-                    # Refresh cache-buster every upload
-                    public_url = supabase.storage.from_("astra-bucket").get_public_url(path)
-                    cache_buster = int(time.time())
-                    self.article_file_url = f"{public_url}?v={cache_buster}"
-
-                    self.article_file = None  # don’t save locally
-                else:
-                    self.article_file = None
 
         super().save(*args, **kwargs)
 

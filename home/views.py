@@ -125,7 +125,11 @@ class ArticleDetailView(View):
     def get(self, request, SLUG, *args, **kwargs):
         try:
             article = Article.objects.get(article_slug=SLUG)
-            co_author_list = (article.co_authors).split(",")
+            co_author_list = [
+                name.strip()
+                for name in (article.co_authors or "").split(",")
+                if name.strip()
+            ]
             first_co_author = co_author_list[0]
             related_articles = Article.objects.filter(journal_category=article.journal_category).exclude(id=article.id).order_by("-timestamp")[:3]
         except:
@@ -133,7 +137,13 @@ class ArticleDetailView(View):
             co_author_list = None
             related_articles = None
             first_co_author = None
+
+        author = False
+        if article.author and not article.author.is_superuser:
+            author = True
+
         context = {
+            "author": author,
             "article":article,
             "co_author_list":co_author_list,
             "related_articles":related_articles, 

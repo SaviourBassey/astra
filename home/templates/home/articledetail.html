@@ -17,7 +17,7 @@
 	{% block pagemeta %}
 
 	<meta name="citation_title" content="{{ article.article_title }}">
-	{% if article.author %}
+	{% if author %}
 		<meta name="citation_author" content="{{ article.author.first_name }} {{ article.author.last_name }}">
 	{% endif %}
 
@@ -33,22 +33,31 @@
 	<meta name="citation_firstpage" content="10">
 	<meta name="citation_lastpage" content="20">
 	<meta name="citation_doi" content="{{ article.article_DOI }}">
-	<meta name="citation_pdf_url" content="{{ article.article_file_url }}">
+	<meta name="citation_pdf_url" content="{{ article.article_file.url }}">
 
 	<title>{{ article.article_title }} - {{ article.journal_category.journal_name }} </title>
 
 	<meta name="description" content="by 
-		{% if article.author %}
+		{% if author %}
 		{{ article.author.first_name }} {{ article.author.last_name }}
 		{% else %} 
 		{{ first_co_author}} 
 		{% endif %} - 
 		{{ article.article_abstract }}">
 
-	<meta name="keywords" content="{{ article.article_keywords }}
-	{{ article.author.first_name }} {{ article.author.last_name }}
+	<meta name="keywords" content="{{ article.article_keywords }}, 
+	{% if author %}
+		{{ article.author.first_name }} {{ article.author.last_name }}, 
+		
+	{% else %}
 																
-	{% if article.co_authors %}, {{ article.co_authors }} {% endif %}
+	{% if co_author_list %}
+		{% for author in co_author_list %}
+			{{ author }}, 
+		{% endfor %}
+	{% endif %}
+
+	{% endif %}
 	">
 
 	 <link rel="canonical" href="https://www.astrajournal.com/articles/{{ article.article_slug }}">
@@ -312,7 +321,7 @@
 											<div class="sj-description">
 												<p>{{ article.article_abstract }}</p>
 												<br>
-												<a class="sj-btn sj-btnactive" href="{{ article.article_file_url }}" download="">Download Article</a>
+												<a class="sj-btn sj-btnactive" href="{{ article.article_file.url }}" download="">Download Article</a>
 											</div>
 										</div>
 									</div>
