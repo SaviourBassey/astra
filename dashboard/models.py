@@ -61,6 +61,8 @@ class Article(models.Model):
     article_abstract = models.TextField()
     article_file_size = models.PositiveIntegerField(blank=True, null=True, help_text="File size in bytes", editable=False)
     article_file = models.FileField(upload_to="articles/", blank=True, null=True)
+    article_first_page = models.IntegerField()
+    article_last_page = models.IntegerField()
     # article_volume = models.ForeignKey(Volume, blank=True, null=True, on_delete=models.CASCADE)
     publish = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
